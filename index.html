@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contextual Me v6.0</title>
+    <title>Contextual Me v7.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
@@ -11,13 +11,13 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Playfair+Display:italic&display=swap');
-        body { font-family: 'Noto Sans JP', sans-serif; background-color: #0f172a; color: #f1f5f9; margin: 0; }
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #020617; color: #f1f5f9; margin: 0; }
         .serif { font-family: 'Playfair Display', serif; }
-        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .map-link:hover { text-decoration: underline; color: #818cf8; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .btn-gradient { background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%); }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-200">
+<body>
     <div id="root"></div>
 
     <script type="text/babel">
@@ -30,24 +30,27 @@
 
         const MASTER_DATA = {
             gyms: [
-                { id: 'bm_bugis', name: "Boulder Movement Bugis", area: "Bugis", menu: "終了後のプロテイン補給を忘れずに！" },
-                { id: 'bm_rochor', name: "Boulder Movement Rochor", area: "Rochor", menu: "集中できる静かな壁が特徴。" },
-                { id: 'oyeyo', name: "Oyeyo Bouldering Studio", area: "Little India", menu: "アットホームな雰囲気で追い込める。" },
-                { id: 'fb_maxwell', name: "Fit Bloc Maxwell", area: "Maxwell", menu: "最新設備でリカバリーまで完璧に。" },
-                { id: 'bp_chev', name: "Boulder+ Chevrons", area: "Jurong", menu: "広大な壁でダイナミックな動きを。" },
-                { id: 'bp_lavender', name: "Boulder+ Lavender", area: "Lavender", menu: "Aperia Mall内の高い壁が魅力。" },
-                { id: 'bff_ben', name: "BFF Climb Bendemeer", area: "Bendemeer", menu: "明るい空間でモチベーションアップ。" }
+                { id: 'bm_bugis', name: "Boulder Movement Bugis", area: "Bugis", menu: "終了後、近くの元気が出るプロテインを。" },
+                { id: 'bm_rochor', name: "Boulder Movement Rochor", area: "Rochor", menu: "最新の壁でテクニカルな課題に挑戦。" },
+                { id: 'oyeyo', name: "Oyeyo Bouldering Studio", area: "Little India", menu: "アットホームな壁。指の皮を大事に。" },
+                { id: 'fb_maxwell', name: "Fit Bloc Maxwell", area: "Maxwell", menu: "トレーニング後のサウナ・シャワーでリセット。" },
+                { id: 'bp_chev', name: "Boulder+ Chevrons", area: "Jurong", menu: "ダイナミックなムーブを楽しむ広い壁。" },
+                { id: 'bp_lavender', name: "Boulder+ Lavender", area: "Lavender", menu: "高い壁で持久力を。Aperia Mall内。" },
+                { id: 'bm_tp', name: "Boulder Movement Tanjong Pagar", area: "Tanjong Pagar", menu: "仕事終わりの一登りに最適。" }
             ],
             museums: [
-                { id: 'ng', name: "National Gallery Singapore", area: "City Hall", menu: "Courtyard Cafe のケーキが絶品。" },
-                { id: 'asm', name: "ArtScience Museum", area: "Marina Bay", menu: "展示に合わせた限定メニューがあることも。" }
+                { id: 'ng', name: "National Gallery Singapore", area: "City Hall", menu: "Courtyard Cafe のシグネチャーケーキ。" },
+                { id: 'nm', name: "National Museum of Singapore", area: "Dhoby Ghaut", menu: "Food For Thought での読書ランチ。" },
+                { id: 'asm', name: "ArtScience Museum", area: "Marina Bay", menu: "FabCafe のクリエイティブなドリンク。" },
+                { id: 'acm', name: "Asian Civilisations Museum", area: "Raffles Place", menu: "Privé のテラス席でのんびり。" }
             ],
             cafes: [
                 { name: "The Glasshouse", area: "City Hall", menu: "Classic Salmon Smorrebrod / Avocado Toast", desc: "明るい光の中で栄養補給。" },
-                { name: "Apartment Coffee", area: "Lavender", menu: "Specialty Filter Coffee", desc: "静寂と美しいコーヒー。" },
-                { name: "Two Bakers", area: "Lavender", menu: "Earl Grey Pancakes / Signature Cakes", desc: "疲れた体に優しい甘さを。" },
-                { name: "Common Man Coffee", area: "Robertson Quay", menu: "Veggie Wonderland / Full Breakfast", desc: "しっかり食べたい時の定番。" },
-                { name: "Merci Marcel", area: "Tiong Bahru", menu: "Croissants / Cheese Platter", desc: "パリの風を感じる午後。" }
+                { name: "Apartment Coffee", area: "Lavender", menu: "Specialty Filter Coffee (Colombia)", desc: "静寂と美しいコーヒー。" },
+                { name: "Two Bakers", area: "Lavender", menu: "Earl Grey Pancakes", desc: "疲れた体に優しい甘さを。" },
+                { name: "Common Man Coffee", area: "Robertson Quay", menu: "Veggie Wonderland", desc: "しっかり食べたい時の定番。" },
+                { name: "Merci Marcel", area: "Tiong Bahru", menu: "Croissants & Cheese", desc: "パリの風を感じる午後。" },
+                { name: "Bearded Bella", area: "Tanjong Pagar", menu: "Bearded Bella Breakfast", desc: "メルボルンスタイルの心地よさ。" }
             ]
         };
 
@@ -56,12 +59,21 @@
             const [intent, setIntent] = useState('CLIMB');
             const [venue, setVenue] = useState(MASTER_DATA.gyms[0]);
 
-            const getMapsUrl = (name) => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + " Singapore")}`;
+            const getSingleMapUrl = (name) => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + " Singapore")}`;
+            
+            const getFullRouteUrl = (before, main, after) => {
+                const stops = ["Tiong Bahru", before, main, after, "Tiong Bahru"]
+                    .map(s => encodeURIComponent(s + " Singapore"))
+                    .join('/');
+                return `https://www.google.com/maps/dir/${stops}`;
+            };
 
-            // 前後のカフェを自動選定するロジック
             const getCafes = (vArea) => {
-                if (vArea.includes("Lavender") || vArea.includes("Bendemeer") || vArea.includes("Rochor")) {
+                if (vArea.includes("Lavender") || vArea.includes("Bendemeer") || vArea.includes("Rochor") || vArea.includes("Bugis") || vArea.includes("Little India")) {
                     return { before: MASTER_DATA.cafes[1], after: MASTER_DATA.cafes[2] };
+                }
+                if (vArea.includes("Maxwell") || vArea.includes("Tanjong Pagar") || vArea.includes("Raffles Place")) {
+                    return { before: MASTER_DATA.cafes[0], after: MASTER_DATA.cafes[5] };
                 }
                 return { before: MASTER_DATA.cafes[0], after: MASTER_DATA.cafes[4] };
             };
@@ -69,24 +81,24 @@
             const planCafes = getCafes(venue.area);
 
             return (
-                <div className="max-w-md mx-auto min-h-screen flex flex-col p-6 space-y-8">
+                <div className="max-w-md mx-auto min-h-screen flex flex-col p-6 space-y-8 animate-in">
                     <header className="mt-8 text-center">
                         <h1 className="text-4xl font-light tracking-tighter serif italic text-white">Contextual Me</h1>
-                        <p className="text-[10px] uppercase tracking-[0.3em] text-slate-500 mt-2 italic text-indigo-400">Personalized Journey</p>
+                        <p className="text-[10px] uppercase tracking-[0.3em] text-slate-500 mt-2">Route Navigator v7.0</p>
                     </header>
 
                     {view === 'home' && (
-                        <div className="space-y-6 animate-fadeIn">
+                        <div className="space-y-6">
                             <div className="glass p-6 rounded-[2.5rem] space-y-6 border-white/10 shadow-2xl">
                                 <div className="flex bg-slate-900 rounded-2xl p-1 border border-white/5">
-                                    <button onClick={() => { setIntent('CLIMB'); setVenue(MASTER_DATA.gyms[0]); }} className={`flex-1 py-3 rounded-xl text-[10px] font-bold transition ${intent === 'CLIMB' ? 'bg-indigo-600 text-white' : 'text-slate-500'}`}>CLIMB</button>
-                                    <button onClick={() => { setIntent('CULTURE'); setVenue(MASTER_DATA.museums[0]); }} className={`flex-1 py-3 rounded-xl text-[10px] font-bold transition ${intent === 'CULTURE' ? 'bg-indigo-600 text-white' : 'text-slate-500'}`}>CULTURE</button>
+                                    <button onClick={() => { setIntent('CLIMB'); setVenue(MASTER_DATA.gyms[0]); }} className={`flex-1 py-3 rounded-xl text-[10px] font-bold transition ${intent === 'CLIMB' ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-500'}`}>CLIMB</button>
+                                    <button onClick={() => { setIntent('CULTURE'); setVenue(MASTER_DATA.museums[0]); }} className={`flex-1 py-3 rounded-xl text-[10px] font-bold transition ${intent === 'CULTURE' ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-500'}`}>CULTURE</button>
                                 </div>
 
                                 <div className="space-y-4 px-2">
-                                    <label className="text-[10px] uppercase tracking-widest text-slate-500 block mb-1">Select Venue</label>
+                                    <label className="text-[10px] uppercase tracking-widest text-slate-500 block mb-1 tracking-widest">Select Destination</label>
                                     <select 
-                                        className="w-full bg-slate-900/50 border border-white/10 rounded-xl p-3 text-sm text-white focus:outline-none appearance-none"
+                                        className="w-full bg-slate-900/80 border border-white/10 rounded-xl p-3 text-sm text-white focus:outline-none appearance-none"
                                         onChange={(e) => {
                                             const list = intent === 'CLIMB' ? MASTER_DATA.gyms : MASTER_DATA.museums;
                                             setVenue(list.find(v => v.name === e.target.value));
@@ -99,20 +111,29 @@
                                     </select>
                                 </div>
 
-                                <button onClick={() => setView('plan')} className="w-full bg-indigo-600 text-white py-5 rounded-3xl font-bold hover:bg-indigo-500 transition shadow-lg shadow-indigo-500/20 text-xs tracking-[0.2em] uppercase">Generate Master Plan</button>
+                                <button onClick={() => setView('plan')} className="w-full btn-gradient text-white py-5 rounded-3xl font-bold hover:opacity-90 transition shadow-lg shadow-indigo-500/20 text-xs tracking-[0.2em] uppercase">Generate Master Route</button>
                             </div>
                         </div>
                     )}
 
                     {view === 'plan' && (
-                        <div className="space-y-6 animate-fadeIn">
-                            <h2 className="text-xl serif italic text-white px-2">Your Curated Timeline</h2>
+                        <div className="space-y-6 animate-fadeIn pb-12">
+                            <div className="flex items-center justify-between px-2">
+                                <h2 className="text-xl serif italic text-white">Curated Journey</h2>
+                                <a 
+                                    href={getFullRouteUrl(planCafes.before.name, venue.name, planCafes.after.name)}
+                                    target="_blank"
+                                    className="bg-indigo-500/10 text-indigo-400 text-[10px] font-bold py-2 px-4 rounded-full border border-indigo-500/20 flex items-center gap-2 hover:bg-indigo-500/20"
+                                >
+                                    <Icon name="map" className="w-3 h-3" /> Full Route
+                                </a>
+                            </div>
                             
                             <div className="space-y-10 relative ml-4 before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[1px] before:bg-slate-800">
-                                <TimelineItem time="12:00" type="before" title={planCafes.before.name} desc={planCafes.before.desc} menu={planCafes.before.menu} url={getMapsUrl(planCafes.before.name)} icon="coffee" />
-                                <TimelineItem time="14:00" type="main" title={venue.name} desc={`${venue.area} にて。`} menu={venue.menu} url={getMapsUrl(venue.name)} icon={intent === 'CLIMB' ? "activity" : "palette"} active />
-                                <TimelineItem time="17:00" type="after" title={planCafes.after.name} desc={planCafes.after.desc} menu={planCafes.after.menu} url={getMapsUrl(planCafes.after.name)} icon="book-open" />
-                                <TimelineItem time="19:00" type="home" title="Home: Tiong Bahru" desc="心地よい疲労と共に帰宅。" icon="home" />
+                                <TimelineItem time="12:00" title={planCafes.before.name} desc={planCafes.before.desc} menu={planCafes.before.menu} url={getSingleMapUrl(planCafes.before.name)} icon="coffee" />
+                                <TimelineItem time="14:00" title={venue.name} desc={`${venue.area} にて集中。`} menu={venue.menu} url={getSingleMapUrl(venue.name)} icon={intent === 'CLIMB' ? "activity" : "palette"} active />
+                                <TimelineItem time="17:00" title={planCafes.after.name} desc={planCafes.after.desc} menu={planCafes.after.menu} url={getSingleMapUrl(planCafes.after.name)} icon="book-open" />
+                                <TimelineItem time="19:00" title="Home" desc="Tiong Bahru。お疲れさまでした。" icon="home" />
                             </div>
 
                             <button onClick={() => setView('home')} className="w-full py-4 text-[10px] text-slate-600 uppercase tracking-widest mt-8 border-t border-white/5">Modify Selection</button>
@@ -124,19 +145,19 @@
 
         const TimelineItem = ({ time, title, desc, menu, url, icon, active }) => (
             <div className="flex gap-6 relative">
-                <div className={`w-[23px] h-[23px] rounded-full z-10 flex items-center justify-center ${active ? 'bg-indigo-600 shadow-[0_0_20px_rgba(79,70,229,0.4)] text-white' : 'bg-slate-900 border border-slate-800 text-slate-500'}`}>
+                <div className={`w-[23px] h-[23px] rounded-full z-10 flex items-center justify-center ${active ? 'bg-indigo-600 shadow-[0_0_20px_rgba(79,70,229,0.4)] text-white' : 'bg-slate-950 border border-slate-800 text-slate-500'}`}>
                     <Icon name={icon} className="w-3 h-3" />
                 </div>
                 <div className="flex-1 -mt-1">
                     <span className="text-[10px] font-bold text-slate-600 tracking-tighter uppercase">{time}</span>
                     <h3 className={`text-sm font-bold ${active ? 'text-white' : 'text-slate-300'}`}>
-                        <a href={url} target="_blank" rel="noopener noreferrer" className="map-link">{title}</a>
+                        <a href={url} target="_blank" className="hover:text-indigo-400 hover:underline">{title}</a>
                     </h3>
-                    <p className="text-[11px] text-slate-500 mt-0.5 leading-relaxed">{desc}</p>
+                    <p className="text-[11px] text-slate-500 mt-1 leading-relaxed italic opacity-80">{desc}</p>
                     {menu && (
-                        <div className="mt-2 bg-white/5 rounded-xl p-3 border border-white/5">
-                            <span className="text-[9px] uppercase tracking-wider text-indigo-400 font-bold block mb-1 italic">Recommended Menu</span>
-                            <p className="text-[10px] text-slate-300 font-medium tracking-wide leading-relaxed">{menu}</p>
+                        <div className="mt-3 bg-white/[0.03] rounded-2xl p-4 border border-white/5 group hover:border-indigo-500/30 transition">
+                            <span className="text-[9px] uppercase tracking-wider text-indigo-400 font-bold block mb-1 italic">Must Try Item</span>
+                            <p className="text-[11px] text-slate-300 font-medium tracking-wide leading-relaxed">{menu}</p>
                         </div>
                     )}
                 </div>
