@@ -3,152 +3,170 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contextual Me - 平日ルーティン & 休日プランナー</title>
+    <title>Contextual Me v5.0 - Culture & Climb</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide-react"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&family=Georgia&display=swap');
-        body { font-family: 'Noto Sans JP', sans-serif; background-color: #f0f2f5; color: #1e293b; }
-        .serif { font-family: 'Georgia', 'Hiragino Mincho ProN', serif; }
-        .animate-slide-up { animation: slideUp 0.5s ease-out; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Playfair+Display:italic&display=swap');
+        body { font-family: 'Noto Sans JP', sans-serif; background-color: #0f172a; color: #f1f5f9; margin: 0; }
+        .serif { font-family: 'Playfair Display', serif; }
+        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .animate-in { animation: fadeInUp 0.8s ease-out forwards; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
-<body>
+<body class="bg-slate-950 text-slate-200">
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState, useEffect } = React;
-        const { MapPin, Clock, Coffee, Activity, AlertCircle, ShoppingCart, CheckCircle2, ChevronRight } = lucide;
+        const { useState } = React;
+        const { MapPin, Clock, Coffee, Activity, AlertCircle, ShoppingCart, CheckCircle2, ChevronRight, BookOpen, Palette } = lucideReact;
+
+        const MASTER_DATA = {
+            gyms: [
+                { id: 'bff_ben', name: "BFF Climb Bendemeer", area: "Bendemeer" },
+                { id: 'bff_bt', name: "BFF Climb Bukit Timah", area: "Bukit Timah" },
+                { id: 'bm_tp', name: "Boulder Movement Tanjong Pagar", area: "Tanjong Pagar" },
+                { id: 'bm_sun', name: "Boulder Movement Suntec", area: "Suntec" },
+                { id: 'ps', name: "Project Send", area: "Esplanade" },
+                { id: 'boruda', name: "Boruda", area: "Alexandra" }
+            ],
+            museums: [
+                { id: 'ng', name: "National Gallery Singapore", area: "City Hall" },
+                { id: 'nm', name: "National Museum of Singapore", area: "Dhoby Ghaut" },
+                { id: 'asm', name: "ArtScience Museum", area: "Marina Bay" },
+                { id: 'acm', name: "Asian Civilisations Museum", area: "Raffles Place" },
+                { id: 'pm', name: "Peranakan Museum", area: "City Hall" },
+                { id: 'sam', name: "Singapore Art Museum (SAM)", area: "Tanjong Pagar" },
+                { id: 'lkc', name: "Lee Kong Chian Natural History", area: "Clementi" }
+            ],
+            cafes: [
+                { name: "Apartment Coffee", area: "Lavender", desc: "洗練された光とコーヒー。BFF Bendemeerからの帰り道に。" },
+                { name: "The Glasshouse CHIJMES", area: "City Hall", desc: "温室のような空間。美術館巡りの後の栄養補給に。" },
+                { name: "Atlas Coffeehouse", area: "Bukit Timah", desc: "BFF BT後の読書スポット。" },
+                { name: "Bearded Bella", area: "Tanjong Pagar", desc: "チョンバルの手前で、少しだけ寄り道。" },
+                { name: "Merci Marcel", area: "Tiong Bahru", desc: "家に戻る前の、いつもの安心感。" },
+                { name: "Common Man Coffee", area: "Robertson Quay", desc: "川沿いの静かな午後。" }
+            ]
+        };
 
         const App = () => {
-            const [view, setView] = useState('home'); // 'home', 'plan', 'inventory'
-            const [inventory, setInventory] = useState({
-                blueberry: 3, yogurt: 3, milk: 3, mochi: 3
-            });
-            const [showGuard, setShowGuard] = useState(false);
+            const [view, setView] = useState('home');
+            const [intent, setIntent] = useState('CLIMB'); // 'CLIMB' or 'CULTURE'
+            const [venue, setVenue] = useState(MASTER_DATA.gyms[0]);
 
-            useEffect(() => { lucide.createIcons(); }, [view, showGuard]);
-
-            // 在庫確認ロジック
-            const checkInventory = () => {
-                const lowItems = Object.keys(inventory).filter(key => inventory[key] <= 2);
-                return lowItems;
+            const getRecommendedCafe = (vArea) => {
+                if (vArea === "Bendemeer") return MASTER_DATA.cafes[0];
+                if (vArea === "City Hall" || vArea === "Dhoby Ghaut") return MASTER_DATA.cafes[1];
+                if (vArea === "Bukit Timah") return MASTER_DATA.cafes[2];
+                if (vArea === "Tanjong Pagar") return MASTER_DATA.cafes[3];
+                return MASTER_DATA.cafes[4];
             };
 
-            const lowItems = checkInventory();
+            const recommendedCafe = getRecommendedCafe(venue.area);
 
             return (
-                <div className="max-w-md mx-auto min-h-screen bg-slate-50 shadow-2xl overflow-hidden flex flex-col">
-                    {/* Header */}
-                    <header className="p-8 pt-12 bg-white border-b border-slate-100 text-center">
-                        <h1 className="text-3xl font-bold tracking-tight text-slate-900 serif">Contextual Me</h1>
-                        <p className="text-slate-500 text-sm mt-2 uppercase tracking-widest">Personal Concierge</p>
+                <div className="max-w-md mx-auto min-h-screen flex flex-col p-6 space-y-8 animate-in">
+                    <header className="mt-8 text-center">
+                        <h1 className="text-4xl font-light tracking-tighter serif italic text-white">Contextual Me</h1>
+                        <p className="text-[10px] uppercase tracking-[0.3em] text-slate-500 mt-2">Culture & Movement Optimized</p>
                     </header>
 
-                    <main className="flex-1 p-6 overflow-y-auto">
-                        {view === 'home' && (
-                            <div className="space-y-6 animate-slide-up">
-                                {/* Nutrition Guard Alert */}
-                                {lowItems.length > 0 && (
-                                    <div className="bg-amber-50 border border-amber-200 p-4 rounded-2xl flex items-start gap-3">
-                                        <AlertCircle className="w-5 h-5 text-amber-500 mt-0.5" />
-                                        <div>
-                                            <p className="text-sm font-bold text-amber-900">在庫リマインダー</p>
-                                            <p className="text-xs text-amber-700 mt-1">
-                                                {lowItems.join(', ')} がそろそろなくなるよ。平日の朝食に困らないように、今日買って帰る？
-                                            </p>
-                                        </div>
-                                    </div>
-                                )}
-
-                                {/* Main Action */}
-                                <div className="grid grid-cols-1 gap-4">
+                    {view === 'home' && (
+                        <div className="space-y-6">
+                            <div className="glass p-6 rounded-[2.5rem] space-y-6">
+                                {/* Intent Toggle */}
+                                <div className="flex bg-slate-900/50 rounded-2xl p-1">
                                     <button 
-                                        onClick={() => setView('plan')}
-                                        className="bg-slate-900 text-white p-6 rounded-3xl flex flex-col items-center gap-3 hover:bg-slate-800 transition"
+                                        onClick={() => { setIntent('CLIMB'); setVenue(MASTER_DATA.gyms[0]); }}
+                                        className={`flex-1 py-3 rounded-xl text-xs font-bold transition ${intent === 'CLIMB' ? 'bg-indigo-500 text-white shadow-lg' : 'text-slate-500'}`}
                                     >
-                                        <Clock className="w-8 h-8" />
-                                        <span className="font-bold">明日のプランを作る</span>
+                                        <Activity size={14} className="inline mr-2" /> CLIMB
                                     </button>
-                                    
                                     <button 
-                                        onClick={() => setView('inventory')}
-                                        className="bg-white border border-slate-200 p-6 rounded-3xl flex flex-col items-center gap-3 hover:bg-slate-50 transition text-slate-700"
+                                        onClick={() => { setIntent('CULTURE'); setVenue(MASTER_DATA.museums[0]); }}
+                                        className={`flex-1 py-3 rounded-xl text-xs font-bold transition ${intent === 'CULTURE' ? 'bg-indigo-500 text-white shadow-lg' : 'text-slate-500'}`}
                                     >
-                                        <ShoppingCart className="w-8 h-8" />
-                                        <span className="font-bold">在庫をチェック</span>
+                                        <Palette size={14} className="inline mr-2" /> CULTURE
                                     </button>
                                 </div>
 
-                                {/* Context Note */}
-                                <div className="p-6 bg-white rounded-3xl border border-slate-100 shadow-sm">
-                                    <p className="serif text-slate-800 italic leading-relaxed text-center">
-                                        "静かな場所で本を読むこと、<br/>
-                                        自分の体を整えること、<br/>
-                                        それが一番の贅沢だよ。"
-                                    </p>
+                                <div className="space-y-2">
+                                    <label className="text-[10px] uppercase tracking-widest text-slate-500 ml-2">目的地を選択</label>
+                                    <select 
+                                        className="w-full bg-transparent border-b border-slate-800 p-2 text-sm text-white focus:outline-none"
+                                        onChange={(e) => {
+                                            const list = intent === 'CLIMB' ? MASTER_DATA.gyms : MASTER_DATA.museums;
+                                            setVenue(list.find(v => v.name === e.target.value));
+                                        }}
+                                        value={venue.name}
+                                    >
+                                        {(intent === 'CLIMB' ? MASTER_DATA.gyms : MASTER_DATA.museums).map(v => (
+                                            <option key={v.id} value={v.name} className="bg-slate-900">{v.name}</option>
+                                        ))}
+                                    </select>
                                 </div>
-                            </div>
-                        )}
 
-                        {view === 'plan' && (
-                            <div className="space-y-6 animate-slide-up">
-                                <h2 className="text-xl font-bold serif border-b pb-2">明日のプラン (Sunday)</h2>
-                                <div className="space-y-4">
-                                    <TimelineItem time="12:00" title="出発" desc="東西線でシティ・ホールへ。読書タイム。" />
-                                    <TimelineItem 
-                                        time="12:40" 
-                                        title="ランチ @ The Glasshouse" 
-                                        desc="栄養ガード発動中：穀物ボウルがおすすめ。ケーキは控えめに。" 
-                                        highlight
-                                    />
-                                    <TimelineItem time="14:30" title="モネ展鑑賞" desc="ナショナル・ギャラリー。光の芸術を堪能。" />
-                                    <TimelineItem time="17:00" title="The Book Cafe" desc="静かな空間で『任侠病院』の続きを。" />
-                                </div>
-                                <button onClick={() => setView('home')} className="w-full py-3 text-slate-400 text-sm mt-4">ホームに戻る</button>
+                                <button 
+                                    onClick={() => setView('plan')}
+                                    className="w-full bg-indigo-500/20 text-indigo-400 py-5 rounded-3xl font-bold hover:bg-indigo-500/30 transition text-sm tracking-widest"
+                                >
+                                    プランを生成する
+                                </button>
                             </div>
-                        )}
 
-                        {view === 'inventory' && (
-                            <div className="space-y-6 animate-slide-up">
-                                <h2 className="text-xl font-bold serif border-b pb-2">必須アイテム在庫</h2>
-                                <div className="grid grid-cols-1 gap-3">
-                                    <InventoryRow label="ブルーベリー" count={inventory.blueberry} onAdd={() => setInventory({...inventory, blueberry: 5})} />
-                                    <InventoryRow label="ヨーグルト" count={inventory.yogurt} onAdd={() => setInventory({...inventory, yogurt: 5})} />
-                                    <InventoryRow label="ミルク" count={inventory.milk} onAdd={() => setInventory({...inventory, milk: 5})} />
-                                    <InventoryRow label="もち" count={inventory.mochi} onAdd={() => setInventory({...inventory, mochi: 5})} />
-                                </div>
-                                <button onClick={() => setView('home')} className="w-full py-3 text-slate-400 text-sm mt-4">ホームに戻る</button>
+                            <div className="pt-8 border-t border-slate-900 text-center">
+                                <p className="text-xs text-slate-500 italic leading-loose">
+                                    "静かな展示室、あるいは壁のホールド。<br/>
+                                    どちらにせよ、最後は心地よい一杯のコーヒーへ。"
+                                </p>
                             </div>
-                        )}
-                    </main>
+                        </div>
+                    )}
+
+                    {view === 'plan' && (
+                        <div className="space-y-6">
+                            <h2 className="text-xl serif italic text-white">Your Optimized Route</h2>
+                            
+                            <div className="space-y-8 relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[1px] before:bg-slate-800">
+                                <TimelineItem 
+                                    time="Destination" 
+                                    title={venue.name} 
+                                    desc={`${venue.area} で過ごす贅沢な時間。`} 
+                                />
+                                <TimelineItem 
+                                    time="On the Way" 
+                                    title={recommendedCafe.name} 
+                                    desc={recommendedCafe.desc} 
+                                    active 
+                                />
+                                <TimelineItem 
+                                    time="Home" 
+                                    title="Tiong Bahru" 
+                                    desc="明日の準備をして、ゆっくりと眠りにつく。" 
+                                />
+                            </div>
+
+                            <button onClick={() => setView('home')} className="w-full py-4 text-xs text-slate-500 uppercase tracking-widest mt-8">Modify Selection</button>
+                        </div>
+                    )}
                 </div>
             );
         };
 
-        const TimelineItem = ({ time, title, desc, highlight }) => (
-            <div className={`flex gap-4 p-4 rounded-2xl ${highlight ? 'bg-amber-50 border border-amber-100' : 'bg-white'}`}>
-                <div className="text-xs font-bold text-slate-400 pt-1">{time}</div>
-                <div>
-                    <div className="font-bold text-slate-800">{title}</div>
-                    <div className="text-xs text-slate-500 mt-1 leading-relaxed">{desc}</div>
+        const TimelineItem = ({ time, title, desc, active }) => (
+            <div className="flex gap-6 relative animate-in">
+                <div className={`w-[23px] h-[23px] rounded-full z-10 flex items-center justify-center ${active ? 'bg-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.5)]' : 'bg-slate-900 border border-slate-800'}`}>
+                    {active && <div className="w-2 h-2 bg-white rounded-full"></div>}
                 </div>
-            </div>
-        );
-
-        const InventoryRow = ({ label, count, onAdd }) => (
-            <div className="flex items-center justify-between p-4 bg-white rounded-2xl border border-slate-100">
-                <div>
-                    <span className="font-bold text-slate-700">{label}</span>
-                    <span className={`ml-3 text-sm ${count <= 2 ? 'text-rose-500 font-bold' : 'text-slate-400'}`}>あと {count}日分</span>
+                <div className="flex-1 -mt-1">
+                    <span className="text-[10px] font-bold text-slate-600 tracking-tighter uppercase">{time}</span>
+                    <h3 className={`text-sm font-bold ${active ? 'text-white' : 'text-slate-400'}`}>{title}</h3>
+                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">{desc}</p>
                 </div>
-                <button onClick={onAdd} className="bg-slate-100 hover:bg-slate-200 p-2 rounded-full transition">
-                    <CheckCircle2 className="w-5 h-5 text-slate-400" />
-                </button>
             </div>
         );
 
