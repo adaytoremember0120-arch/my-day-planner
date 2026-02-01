@@ -3,34 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contextual Me v5.0 - Culture & Climb</title>
+    <title>Contextual Me v5.1</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/lucide-react"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Playfair+Display:italic&display=swap');
         body { font-family: 'Noto Sans JP', sans-serif; background-color: #0f172a; color: #f1f5f9; margin: 0; }
         .serif { font-family: 'Playfair Display', serif; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
-        .animate-in { animation: fadeInUp 0.8s ease-out forwards; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-200">
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState } = React;
-        const { MapPin, Clock, Coffee, Activity, AlertCircle, ShoppingCart, CheckCircle2, ChevronRight, BookOpen, Palette } = lucideReact;
+        const { useState, useEffect } = React;
+
+        // アイコンを確実に表示するための部品
+        const Icon = ({ name, className = "w-5 h-5" }) => {
+            useEffect(() => {
+                if (window.lucide) {
+                    window.lucide.createIcons();
+                }
+            }, [name]);
+            return <i data-lucide={name} className={className}></i>;
+        };
 
         const MASTER_DATA = {
             gyms: [
                 { id: 'bff_ben', name: "BFF Climb Bendemeer", area: "Bendemeer" },
                 { id: 'bff_bt', name: "BFF Climb Bukit Timah", area: "Bukit Timah" },
                 { id: 'bm_tp', name: "Boulder Movement Tanjong Pagar", area: "Tanjong Pagar" },
-                { id: 'bm_sun', name: "Boulder Movement Suntec", area: "Suntec" },
                 { id: 'ps', name: "Project Send", area: "Esplanade" },
                 { id: 'boruda', name: "Boruda", area: "Alexandra" }
             ],
@@ -39,23 +45,20 @@
                 { id: 'nm', name: "National Museum of Singapore", area: "Dhoby Ghaut" },
                 { id: 'asm', name: "ArtScience Museum", area: "Marina Bay" },
                 { id: 'acm', name: "Asian Civilisations Museum", area: "Raffles Place" },
-                { id: 'pm', name: "Peranakan Museum", area: "City Hall" },
-                { id: 'sam', name: "Singapore Art Museum (SAM)", area: "Tanjong Pagar" },
-                { id: 'lkc', name: "Lee Kong Chian Natural History", area: "Clementi" }
+                { id: 'sam', name: "Singapore Art Museum (SAM)", area: "Tanjong Pagar" }
             ],
             cafes: [
-                { name: "Apartment Coffee", area: "Lavender", desc: "洗練された光とコーヒー。BFF Bendemeerからの帰り道に。" },
-                { name: "The Glasshouse CHIJMES", area: "City Hall", desc: "温室のような空間。美術館巡りの後の栄養補給に。" },
+                { name: "Apartment Coffee", area: "Lavender", desc: "BFF Bendemeerからの帰り道に。" },
+                { name: "The Glasshouse CHIJMES", area: "City Hall", desc: "美術館巡りの後の栄養補給に。" },
                 { name: "Atlas Coffeehouse", area: "Bukit Timah", desc: "BFF BT後の読書スポット。" },
-                { name: "Bearded Bella", area: "Tanjong Pagar", desc: "チョンバルの手前で、少しだけ寄り道。" },
-                { name: "Merci Marcel", area: "Tiong Bahru", desc: "家に戻る前の、いつもの安心感。" },
-                { name: "Common Man Coffee", area: "Robertson Quay", desc: "川沿いの静かな午後。" }
+                { name: "Bearded Bella", area: "Tanjong Pagar", desc: "チョンバルの手前で、寄り道。" },
+                { name: "Merci Marcel", area: "Tiong Bahru", desc: "家の近くの、いつもの安心感。" }
             ]
         };
 
         const App = () => {
             const [view, setView] = useState('home');
-            const [intent, setIntent] = useState('CLIMB'); // 'CLIMB' or 'CULTURE'
+            const [intent, setIntent] = useState('CLIMB');
             const [venue, setVenue] = useState(MASTER_DATA.gyms[0]);
 
             const getRecommendedCafe = (vArea) => {
@@ -69,35 +72,34 @@
             const recommendedCafe = getRecommendedCafe(venue.area);
 
             return (
-                <div className="max-w-md mx-auto min-h-screen flex flex-col p-6 space-y-8 animate-in">
+                <div className="max-w-md mx-auto min-h-screen flex flex-col p-6 space-y-8">
                     <header className="mt-8 text-center">
                         <h1 className="text-4xl font-light tracking-tighter serif italic text-white">Contextual Me</h1>
-                        <p className="text-[10px] uppercase tracking-[0.3em] text-slate-500 mt-2">Culture & Movement Optimized</p>
+                        <p className="text-[10px] uppercase tracking-[0.3em] text-slate-500 mt-2">Culture & Movement</p>
                     </header>
 
                     {view === 'home' && (
                         <div className="space-y-6">
                             <div className="glass p-6 rounded-[2.5rem] space-y-6">
-                                {/* Intent Toggle */}
-                                <div className="flex bg-slate-900/50 rounded-2xl p-1">
+                                <div className="flex bg-slate-900 rounded-2xl p-1">
                                     <button 
                                         onClick={() => { setIntent('CLIMB'); setVenue(MASTER_DATA.gyms[0]); }}
-                                        className={`flex-1 py-3 rounded-xl text-xs font-bold transition ${intent === 'CLIMB' ? 'bg-indigo-500 text-white shadow-lg' : 'text-slate-500'}`}
+                                        className={`flex-1 py-3 rounded-xl text-xs font-bold transition ${intent === 'CLIMB' ? 'bg-indigo-600 text-white' : 'text-slate-500'}`}
                                     >
-                                        <Activity size={14} className="inline mr-2" /> CLIMB
+                                        CLIMB
                                     </button>
                                     <button 
                                         onClick={() => { setIntent('CULTURE'); setVenue(MASTER_DATA.museums[0]); }}
-                                        className={`flex-1 py-3 rounded-xl text-xs font-bold transition ${intent === 'CULTURE' ? 'bg-indigo-500 text-white shadow-lg' : 'text-slate-500'}`}
+                                        className={`flex-1 py-3 rounded-xl text-xs font-bold transition ${intent === 'CULTURE' ? 'bg-indigo-600 text-white' : 'text-slate-500'}`}
                                     >
-                                        <Palette size={14} className="inline mr-2" /> CULTURE
+                                        CULTURE
                                     </button>
                                 </div>
 
-                                <div className="space-y-2">
-                                    <label className="text-[10px] uppercase tracking-widest text-slate-500 ml-2">目的地を選択</label>
+                                <div className="space-y-2 px-2">
+                                    <label className="text-[10px] uppercase tracking-widest text-slate-500">目的地を選択</label>
                                     <select 
-                                        className="w-full bg-transparent border-b border-slate-800 p-2 text-sm text-white focus:outline-none"
+                                        className="w-full bg-transparent border-b border-slate-700 py-2 text-sm text-white focus:outline-none"
                                         onChange={(e) => {
                                             const list = intent === 'CLIMB' ? MASTER_DATA.gyms : MASTER_DATA.museums;
                                             setVenue(list.find(v => v.name === e.target.value));
@@ -112,63 +114,59 @@
 
                                 <button 
                                     onClick={() => setView('plan')}
-                                    className="w-full bg-indigo-500/20 text-indigo-400 py-5 rounded-3xl font-bold hover:bg-indigo-500/30 transition text-sm tracking-widest"
+                                    className="w-full bg-indigo-600 text-white py-5 rounded-3xl font-bold hover:bg-indigo-500 transition text-sm tracking-widest shadow-lg shadow-indigo-500/20"
                                 >
-                                    プランを生成する
+                                    プランを生成
                                 </button>
-                            </div>
-
-                            <div className="pt-8 border-t border-slate-900 text-center">
-                                <p className="text-xs text-slate-500 italic leading-loose">
-                                    "静かな展示室、あるいは壁のホールド。<br/>
-                                    どちらにせよ、最後は心地よい一杯のコーヒーへ。"
-                                </p>
                             </div>
                         </div>
                     )}
 
                     {view === 'plan' && (
-                        <div className="space-y-6">
-                            <h2 className="text-xl serif italic text-white">Your Optimized Route</h2>
+                        <div className="space-y-6 animate-fadeIn">
+                            <h2 className="text-xl serif italic text-white px-2">Your Optimized Route</h2>
                             
-                            <div className="space-y-8 relative before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[1px] before:bg-slate-800">
-                                <TimelineItem 
-                                    time="Destination" 
-                                    title={venue.name} 
-                                    desc={`${venue.area} で過ごす贅沢な時間。`} 
-                                />
-                                <TimelineItem 
-                                    time="On the Way" 
-                                    title={recommendedCafe.name} 
-                                    desc={recommendedCafe.desc} 
-                                    active 
-                                />
-                                <TimelineItem 
-                                    time="Home" 
-                                    title="Tiong Bahru" 
-                                    desc="明日の準備をして、ゆっくりと眠りにつく。" 
-                                />
+                            <div className="space-y-10 relative ml-4 before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[1px] before:bg-slate-800">
+                                <div className="flex gap-6 relative">
+                                    <div className="w-[23px] h-[23px] rounded-full z-10 bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400">
+                                        <Icon name="map-pin" className="w-3 h-3" />
+                                    </div>
+                                    <div className="flex-1 -mt-1">
+                                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-tighter">Destination</span>
+                                        <h3 className="text-sm font-bold text-slate-200">{venue.name}</h3>
+                                        <p className="text-xs text-slate-500 mt-1">{venue.area} で過ごす贅沢な時間。</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex gap-6 relative">
+                                    <div className="w-[23px] h-[23px] rounded-full z-10 bg-indigo-600 shadow-[0_0_15px_rgba(79,70,229,0.5)] flex items-center justify-center text-white">
+                                        <Icon name="coffee" className="w-3 h-3" />
+                                    </div>
+                                    <div className="flex-1 -mt-1 border-l-2 border-indigo-500/30 pl-4 ml-[-25px]">
+                                        <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-tighter">On the Way (Recommended)</span>
+                                        <h3 className="text-sm font-bold text-white">{recommendedCafe.name}</h3>
+                                        <p className="text-xs text-slate-400 mt-1">{recommendedCafe.desc}</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex gap-6 relative">
+                                    <div className="w-[23px] h-[23px] rounded-full z-10 bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400">
+                                        <Icon name="home" className="w-3 h-3" />
+                                    </div>
+                                    <div className="flex-1 -mt-1 text-slate-400">
+                                        <span className="text-[10px] font-bold uppercase tracking-tighter">Home</span>
+                                        <h3 className="text-sm font-bold">Tiong Bahru</h3>
+                                        <p className="text-xs mt-1 opacity-60">心地よい疲労感と共に。</p>
+                                    </div>
+                                </div>
                             </div>
 
-                            <button onClick={() => setView('home')} className="w-full py-4 text-xs text-slate-500 uppercase tracking-widest mt-8">Modify Selection</button>
+                            <button onClick={() => setView('home')} className="w-full py-4 text-xs text-slate-600 uppercase tracking-widest mt-8">Modify Selection</button>
                         </div>
                     )}
                 </div>
             );
         };
-
-        const TimelineItem = ({ time, title, desc, active }) => (
-            <div className="flex gap-6 relative animate-in">
-                <div className={`w-[23px] h-[23px] rounded-full z-10 flex items-center justify-center ${active ? 'bg-indigo-500 shadow-[0_0_15px_rgba(99,102,241,0.5)]' : 'bg-slate-900 border border-slate-800'}`}>
-                    {active && <div className="w-2 h-2 bg-white rounded-full"></div>}
-                </div>
-                <div className="flex-1 -mt-1">
-                    <span className="text-[10px] font-bold text-slate-600 tracking-tighter uppercase">{time}</span>
-                    <h3 className={`text-sm font-bold ${active ? 'text-white' : 'text-slate-400'}`}>{title}</h3>
-                    <p className="text-xs text-slate-500 mt-1 leading-relaxed">{desc}</p>
-                </div>
-            </div>
-        );
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
