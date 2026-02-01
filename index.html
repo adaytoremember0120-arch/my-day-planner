@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contextual Me v5.1</title>
+    <title>Contextual Me v6.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
@@ -14,6 +14,7 @@
         body { font-family: 'Noto Sans JP', sans-serif; background-color: #0f172a; color: #f1f5f9; margin: 0; }
         .serif { font-family: 'Playfair Display', serif; }
         .glass { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .map-link:hover { text-decoration: underline; color: #818cf8; }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-200">
@@ -22,37 +23,31 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        // アイコンを確実に表示するための部品
-        const Icon = ({ name, className = "w-5 h-5" }) => {
-            useEffect(() => {
-                if (window.lucide) {
-                    window.lucide.createIcons();
-                }
-            }, [name]);
+        const Icon = ({ name, className = "w-4 h-4" }) => {
+            useEffect(() => { if (window.lucide) window.lucide.createIcons(); }, [name]);
             return <i data-lucide={name} className={className}></i>;
         };
 
         const MASTER_DATA = {
             gyms: [
-                { id: 'bff_ben', name: "BFF Climb Bendemeer", area: "Bendemeer" },
-                { id: 'bff_bt', name: "BFF Climb Bukit Timah", area: "Bukit Timah" },
-                { id: 'bm_tp', name: "Boulder Movement Tanjong Pagar", area: "Tanjong Pagar" },
-                { id: 'ps', name: "Project Send", area: "Esplanade" },
-                { id: 'boruda', name: "Boruda", area: "Alexandra" }
+                { id: 'bm_bugis', name: "Boulder Movement Bugis", area: "Bugis", menu: "終了後のプロテイン補給を忘れずに！" },
+                { id: 'bm_rochor', name: "Boulder Movement Rochor", area: "Rochor", menu: "集中できる静かな壁が特徴。" },
+                { id: 'oyeyo', name: "Oyeyo Bouldering Studio", area: "Little India", menu: "アットホームな雰囲気で追い込める。" },
+                { id: 'fb_maxwell', name: "Fit Bloc Maxwell", area: "Maxwell", menu: "最新設備でリカバリーまで完璧に。" },
+                { id: 'bp_chev', name: "Boulder+ Chevrons", area: "Jurong", menu: "広大な壁でダイナミックな動きを。" },
+                { id: 'bp_lavender', name: "Boulder+ Lavender", area: "Lavender", menu: "Aperia Mall内の高い壁が魅力。" },
+                { id: 'bff_ben', name: "BFF Climb Bendemeer", area: "Bendemeer", menu: "明るい空間でモチベーションアップ。" }
             ],
             museums: [
-                { id: 'ng', name: "National Gallery Singapore", area: "City Hall" },
-                { id: 'nm', name: "National Museum of Singapore", area: "Dhoby Ghaut" },
-                { id: 'asm', name: "ArtScience Museum", area: "Marina Bay" },
-                { id: 'acm', name: "Asian Civilisations Museum", area: "Raffles Place" },
-                { id: 'sam', name: "Singapore Art Museum (SAM)", area: "Tanjong Pagar" }
+                { id: 'ng', name: "National Gallery Singapore", area: "City Hall", menu: "Courtyard Cafe のケーキが絶品。" },
+                { id: 'asm', name: "ArtScience Museum", area: "Marina Bay", menu: "展示に合わせた限定メニューがあることも。" }
             ],
             cafes: [
-                { name: "Apartment Coffee", area: "Lavender", desc: "BFF Bendemeerからの帰り道に。" },
-                { name: "The Glasshouse CHIJMES", area: "City Hall", desc: "美術館巡りの後の栄養補給に。" },
-                { name: "Atlas Coffeehouse", area: "Bukit Timah", desc: "BFF BT後の読書スポット。" },
-                { name: "Bearded Bella", area: "Tanjong Pagar", desc: "チョンバルの手前で、寄り道。" },
-                { name: "Merci Marcel", area: "Tiong Bahru", desc: "家の近くの、いつもの安心感。" }
+                { name: "The Glasshouse", area: "City Hall", menu: "Classic Salmon Smorrebrod / Avocado Toast", desc: "明るい光の中で栄養補給。" },
+                { name: "Apartment Coffee", area: "Lavender", menu: "Specialty Filter Coffee", desc: "静寂と美しいコーヒー。" },
+                { name: "Two Bakers", area: "Lavender", menu: "Earl Grey Pancakes / Signature Cakes", desc: "疲れた体に優しい甘さを。" },
+                { name: "Common Man Coffee", area: "Robertson Quay", menu: "Veggie Wonderland / Full Breakfast", desc: "しっかり食べたい時の定番。" },
+                { name: "Merci Marcel", area: "Tiong Bahru", menu: "Croissants / Cheese Platter", desc: "パリの風を感じる午後。" }
             ]
         };
 
@@ -61,45 +56,37 @@
             const [intent, setIntent] = useState('CLIMB');
             const [venue, setVenue] = useState(MASTER_DATA.gyms[0]);
 
-            const getRecommendedCafe = (vArea) => {
-                if (vArea === "Bendemeer") return MASTER_DATA.cafes[0];
-                if (vArea === "City Hall" || vArea === "Dhoby Ghaut") return MASTER_DATA.cafes[1];
-                if (vArea === "Bukit Timah") return MASTER_DATA.cafes[2];
-                if (vArea === "Tanjong Pagar") return MASTER_DATA.cafes[3];
-                return MASTER_DATA.cafes[4];
+            const getMapsUrl = (name) => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + " Singapore")}`;
+
+            // 前後のカフェを自動選定するロジック
+            const getCafes = (vArea) => {
+                if (vArea.includes("Lavender") || vArea.includes("Bendemeer") || vArea.includes("Rochor")) {
+                    return { before: MASTER_DATA.cafes[1], after: MASTER_DATA.cafes[2] };
+                }
+                return { before: MASTER_DATA.cafes[0], after: MASTER_DATA.cafes[4] };
             };
 
-            const recommendedCafe = getRecommendedCafe(venue.area);
+            const planCafes = getCafes(venue.area);
 
             return (
                 <div className="max-w-md mx-auto min-h-screen flex flex-col p-6 space-y-8">
                     <header className="mt-8 text-center">
                         <h1 className="text-4xl font-light tracking-tighter serif italic text-white">Contextual Me</h1>
-                        <p className="text-[10px] uppercase tracking-[0.3em] text-slate-500 mt-2">Culture & Movement</p>
+                        <p className="text-[10px] uppercase tracking-[0.3em] text-slate-500 mt-2 italic text-indigo-400">Personalized Journey</p>
                     </header>
 
                     {view === 'home' && (
-                        <div className="space-y-6">
-                            <div className="glass p-6 rounded-[2.5rem] space-y-6">
-                                <div className="flex bg-slate-900 rounded-2xl p-1">
-                                    <button 
-                                        onClick={() => { setIntent('CLIMB'); setVenue(MASTER_DATA.gyms[0]); }}
-                                        className={`flex-1 py-3 rounded-xl text-xs font-bold transition ${intent === 'CLIMB' ? 'bg-indigo-600 text-white' : 'text-slate-500'}`}
-                                    >
-                                        CLIMB
-                                    </button>
-                                    <button 
-                                        onClick={() => { setIntent('CULTURE'); setVenue(MASTER_DATA.museums[0]); }}
-                                        className={`flex-1 py-3 rounded-xl text-xs font-bold transition ${intent === 'CULTURE' ? 'bg-indigo-600 text-white' : 'text-slate-500'}`}
-                                    >
-                                        CULTURE
-                                    </button>
+                        <div className="space-y-6 animate-fadeIn">
+                            <div className="glass p-6 rounded-[2.5rem] space-y-6 border-white/10 shadow-2xl">
+                                <div className="flex bg-slate-900 rounded-2xl p-1 border border-white/5">
+                                    <button onClick={() => { setIntent('CLIMB'); setVenue(MASTER_DATA.gyms[0]); }} className={`flex-1 py-3 rounded-xl text-[10px] font-bold transition ${intent === 'CLIMB' ? 'bg-indigo-600 text-white' : 'text-slate-500'}`}>CLIMB</button>
+                                    <button onClick={() => { setIntent('CULTURE'); setVenue(MASTER_DATA.museums[0]); }} className={`flex-1 py-3 rounded-xl text-[10px] font-bold transition ${intent === 'CULTURE' ? 'bg-indigo-600 text-white' : 'text-slate-500'}`}>CULTURE</button>
                                 </div>
 
-                                <div className="space-y-2 px-2">
-                                    <label className="text-[10px] uppercase tracking-widest text-slate-500">目的地を選択</label>
+                                <div className="space-y-4 px-2">
+                                    <label className="text-[10px] uppercase tracking-widest text-slate-500 block mb-1">Select Venue</label>
                                     <select 
-                                        className="w-full bg-transparent border-b border-slate-700 py-2 text-sm text-white focus:outline-none"
+                                        className="w-full bg-slate-900/50 border border-white/10 rounded-xl p-3 text-sm text-white focus:outline-none appearance-none"
                                         onChange={(e) => {
                                             const list = intent === 'CLIMB' ? MASTER_DATA.gyms : MASTER_DATA.museums;
                                             setVenue(list.find(v => v.name === e.target.value));
@@ -107,66 +94,54 @@
                                         value={venue.name}
                                     >
                                         {(intent === 'CLIMB' ? MASTER_DATA.gyms : MASTER_DATA.museums).map(v => (
-                                            <option key={v.id} value={v.name} className="bg-slate-900">{v.name}</option>
+                                            <option key={v.id} value={v.name} className="bg-slate-900 text-white">{v.name}</option>
                                         ))}
                                     </select>
                                 </div>
 
-                                <button 
-                                    onClick={() => setView('plan')}
-                                    className="w-full bg-indigo-600 text-white py-5 rounded-3xl font-bold hover:bg-indigo-500 transition text-sm tracking-widest shadow-lg shadow-indigo-500/20"
-                                >
-                                    プランを生成
-                                </button>
+                                <button onClick={() => setView('plan')} className="w-full bg-indigo-600 text-white py-5 rounded-3xl font-bold hover:bg-indigo-500 transition shadow-lg shadow-indigo-500/20 text-xs tracking-[0.2em] uppercase">Generate Master Plan</button>
                             </div>
                         </div>
                     )}
 
                     {view === 'plan' && (
                         <div className="space-y-6 animate-fadeIn">
-                            <h2 className="text-xl serif italic text-white px-2">Your Optimized Route</h2>
+                            <h2 className="text-xl serif italic text-white px-2">Your Curated Timeline</h2>
                             
                             <div className="space-y-10 relative ml-4 before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[1px] before:bg-slate-800">
-                                <div className="flex gap-6 relative">
-                                    <div className="w-[23px] h-[23px] rounded-full z-10 bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400">
-                                        <Icon name="map-pin" className="w-3 h-3" />
-                                    </div>
-                                    <div className="flex-1 -mt-1">
-                                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-tighter">Destination</span>
-                                        <h3 className="text-sm font-bold text-slate-200">{venue.name}</h3>
-                                        <p className="text-xs text-slate-500 mt-1">{venue.area} で過ごす贅沢な時間。</p>
-                                    </div>
-                                </div>
-
-                                <div className="flex gap-6 relative">
-                                    <div className="w-[23px] h-[23px] rounded-full z-10 bg-indigo-600 shadow-[0_0_15px_rgba(79,70,229,0.5)] flex items-center justify-center text-white">
-                                        <Icon name="coffee" className="w-3 h-3" />
-                                    </div>
-                                    <div className="flex-1 -mt-1 border-l-2 border-indigo-500/30 pl-4 ml-[-25px]">
-                                        <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-tighter">On the Way (Recommended)</span>
-                                        <h3 className="text-sm font-bold text-white">{recommendedCafe.name}</h3>
-                                        <p className="text-xs text-slate-400 mt-1">{recommendedCafe.desc}</p>
-                                    </div>
-                                </div>
-
-                                <div className="flex gap-6 relative">
-                                    <div className="w-[23px] h-[23px] rounded-full z-10 bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-400">
-                                        <Icon name="home" className="w-3 h-3" />
-                                    </div>
-                                    <div className="flex-1 -mt-1 text-slate-400">
-                                        <span className="text-[10px] font-bold uppercase tracking-tighter">Home</span>
-                                        <h3 className="text-sm font-bold">Tiong Bahru</h3>
-                                        <p className="text-xs mt-1 opacity-60">心地よい疲労感と共に。</p>
-                                    </div>
-                                </div>
+                                <TimelineItem time="12:00" type="before" title={planCafes.before.name} desc={planCafes.before.desc} menu={planCafes.before.menu} url={getMapsUrl(planCafes.before.name)} icon="coffee" />
+                                <TimelineItem time="14:00" type="main" title={venue.name} desc={`${venue.area} にて。`} menu={venue.menu} url={getMapsUrl(venue.name)} icon={intent === 'CLIMB' ? "activity" : "palette"} active />
+                                <TimelineItem time="17:00" type="after" title={planCafes.after.name} desc={planCafes.after.desc} menu={planCafes.after.menu} url={getMapsUrl(planCafes.after.name)} icon="book-open" />
+                                <TimelineItem time="19:00" type="home" title="Home: Tiong Bahru" desc="心地よい疲労と共に帰宅。" icon="home" />
                             </div>
 
-                            <button onClick={() => setView('home')} className="w-full py-4 text-xs text-slate-600 uppercase tracking-widest mt-8">Modify Selection</button>
+                            <button onClick={() => setView('home')} className="w-full py-4 text-[10px] text-slate-600 uppercase tracking-widest mt-8 border-t border-white/5">Modify Selection</button>
                         </div>
                     )}
                 </div>
             );
         };
+
+        const TimelineItem = ({ time, title, desc, menu, url, icon, active }) => (
+            <div className="flex gap-6 relative">
+                <div className={`w-[23px] h-[23px] rounded-full z-10 flex items-center justify-center ${active ? 'bg-indigo-600 shadow-[0_0_20px_rgba(79,70,229,0.4)] text-white' : 'bg-slate-900 border border-slate-800 text-slate-500'}`}>
+                    <Icon name={icon} className="w-3 h-3" />
+                </div>
+                <div className="flex-1 -mt-1">
+                    <span className="text-[10px] font-bold text-slate-600 tracking-tighter uppercase">{time}</span>
+                    <h3 className={`text-sm font-bold ${active ? 'text-white' : 'text-slate-300'}`}>
+                        <a href={url} target="_blank" rel="noopener noreferrer" className="map-link">{title}</a>
+                    </h3>
+                    <p className="text-[11px] text-slate-500 mt-0.5 leading-relaxed">{desc}</p>
+                    {menu && (
+                        <div className="mt-2 bg-white/5 rounded-xl p-3 border border-white/5">
+                            <span className="text-[9px] uppercase tracking-wider text-indigo-400 font-bold block mb-1 italic">Recommended Menu</span>
+                            <p className="text-[10px] text-slate-300 font-medium tracking-wide leading-relaxed">{menu}</p>
+                        </div>
+                    )}
+                </div>
+            </div>
+        );
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
