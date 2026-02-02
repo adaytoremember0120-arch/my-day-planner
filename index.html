@@ -161,25 +161,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .overview-card {
-      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-      color: white;
-      border-radius: 1rem;
-      padding: 2rem;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-    }
-
-    .overview-card h3 {
-      font-size: 1.125rem;
-      margin-bottom: 1rem;
-    }
-
-    .overview-card p {
-      line-height: 1.75;
-      color: #e2e8f0;
-    }
-
     .timeline {
       position: relative;
     }
@@ -461,7 +442,7 @@
 
         <div class="form-group">
           <label>出発地</label>
-          <input type="text" id="origin" value="Tiong Bahru">
+          <input type="text" id="origin" value="80 Chay Yan Street">
         </div>
 
         <div class="form-group">
@@ -471,7 +452,7 @@
 
         <div class="form-group">
           <label>終了時間</label>
-          <input type="time" id="timeEnd" value="20:00">
+          <input type="time" id="timeEnd" value="18:00">
         </div>
 
         <div class="form-group">
@@ -533,17 +514,37 @@
 
     <!-- Generated Plan -->
     <div id="planSection" class="plan-section">
-      <!-- Overview -->
-      <div class="overview-card">
-        <h3>💬 今日のプラン</h3>
-        <p>疲れてるのにボルダリング、いいじゃん。体を動かすと案外すっきりするよ。でもその前に、ちゃんと整えておこう。帰ってきてからは、甘いものでごほうび。</p>
-        <p style="margin-top: 1rem; color: #94a3b8; font-size: 0.875rem;">12:00 - 20:00 / Tiong Bahru → BFF Climb Bendemeer → 帰宅</p>
+      <!-- Daily Quote -->
+      <div id="dailyQuote" style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-left: 4px solid #f59e0b; border-radius: 0.75rem; padding: 1.25rem; margin-bottom: 1.5rem;">
+        <p id="quoteText" style="color: #78350f; margin: 0; font-style: italic; line-height: 1.6; font-size: 0.95rem;">
+          "ぼくはね、太陽の沈むのを見るのが大好きなんだ。さあ、日没を見に行こう。" 
+        </p>
+        <p id="quoteAuthor" style="color: #92400e; margin-top: 0.5rem; margin-bottom: 0; font-size: 0.85rem; text-align: right;">
+          - 星の王子さま
+        </p>
       </div>
-
+      
+      <!-- Weather Warning -->
+      <div id="weatherInfo" style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-left: 4px solid #3b82f6; border-radius: 0.75rem; padding: 1.25rem; margin-bottom: 1.5rem;">
+        <h4 style="color: #1e40af; margin: 0 0 0.5rem 0; font-size: 1rem;">☁️ 今日の天気</h4>
+        <p id="weatherText" style="color: #1e3a8a; margin: 0; line-height: 1.5;">晴れ時々曇り、気温27-31℃。傘は不要。</p>
+      </div>
+      
+      <!-- Overview -->
       <!-- Timeline -->
       <div class="card">
         <h2>🕐 タイムライン</h2>
         <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot transit"></div>
+            <div class="timeline-content">
+              <div class="timeline-time">11:30 - 12:00</div>
+              <div class="timeline-title">移動</div>
+              <div class="timeline-location">自宅 → Before Cafe</div>
+              <div class="timeline-details">移動</div>
+            </div>
+          </div>
+
           <div class="timeline-item">
             <div class="timeline-dot before"></div>
             <div class="timeline-content">
@@ -559,6 +560,7 @@
             <div class="timeline-content">
               <div class="timeline-time">13:15 - 13:40</div>
               <div class="timeline-title">移動</div>
+              <div class="timeline-location">Before Cafe → ジム</div>
               <div class="timeline-details">MRT で Bendemeer へ（乗り換え1回）</div>
             </div>
           </div>
@@ -579,12 +581,32 @@
           </div>
 
           <div class="timeline-item">
+            <div class="timeline-dot transit"></div>
+            <div class="timeline-content">
+              <div class="timeline-time">18:00 - 18:15</div>
+              <div class="timeline-title">移動</div>
+              <div class="timeline-location">ジム → After Cafe</div>
+              <div class="timeline-details">移動</div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
             <div class="timeline-dot after"></div>
             <div class="timeline-content">
               <div class="timeline-time">18:15 - 19:00</div>
               <div class="timeline-title">After Cafe</div>
               <div class="timeline-location">Keong Saik Bakery</div>
               <div class="timeline-details">甘さで回復。</div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot transit"></div>
+            <div class="timeline-content">
+              <div class="timeline-time">19:00 - 19:30</div>
+              <div class="timeline-title">移動</div>
+              <div class="timeline-location">After Cafe → 自宅</div>
+              <div class="timeline-details">帰宅</div>
             </div>
           </div>
 
@@ -606,22 +628,17 @@
           <div class="cafe-card-body">
             <h4>Two Bakers</h4>
             <div class="cafe-address">88 Horne Road, Singapore 209083</div>
-            <a href="https://www.google.com/maps/search/?api=1&query=Two+Bakers+88+Horne+Road+Singapore" target="_blank" class="map-link before">
-              🗺️ Google マップで開く
+            <a href="https://www.google.com/maps/search/?api=1&query=Two+Bakers+Singapore" target="_blank" style="display: inline-block; margin-top: 0.5rem; color: #3b82f6; text-decoration: none; font-size: 0.875rem;">
+              🗺️ 店舗情報を見る
             </a>
             
             <div class="cafe-section">
-              <div class="cafe-section-title">選んだ理由</div>
-              <div class="cafe-section-text">おしゃれすぎない、カジュアルな雰囲気。ボルダリング前に重くならないメニュー。静か、落ち着いてる。</div>
+              <div class="cafe-section-title">💬 オーダー提案</div>
+              <div class="cafe-section-text">Flat White + アボカドトースト or ギリシャヨーグルトボウル</div>
             </div>
-            
-            <div class="cafe-section">
-              <div class="cafe-section-title">注文提案</div>
-              <div class="cafe-section-text">Singapore Latte + ヨーグルトパフェ or フルーツトースト</div>
-            </div>
-            
+
             <div class="cafe-note">
-              <div class="cafe-note-text">疲れてる時は「軽さ」が大事。ワッフルあるけど、今回はスキップ。</div>
+              <div class="cafe-note-text">甘いものに偏りがちだから、タンパク質と健康的な脂質を意識して。アボカドかヨーグルトで体を整えよう。</div>
             </div>
           </div>
         </div>
@@ -632,22 +649,17 @@
           <div class="cafe-card-body">
             <h4>Keong Saik Bakery</h4>
             <div class="cafe-address">70 Bendemeer Road, #01-03, Singapore 339940</div>
-            <a href="https://www.google.com/maps/search/?api=1&query=Keong+Saik+Bakery+Bendemeer+Singapore" target="_blank" class="map-link after">
-              🗺️ Google マップで開く
+            <a href="https://www.google.com/maps/search/?api=1&query=Keong+Saik+Bakery+Singapore" target="_blank" style="display: inline-block; margin-top: 0.5rem; color: #3b82f6; text-decoration: none; font-size: 0.875rem;">
+              🗺️ 店舗情報を見る
             </a>
             
             <div class="cafe-section">
-              <div class="cafe-section-title">選んだ理由</div>
-              <div class="cafe-section-text">BFF Climb から徒歩圏内。ボルダリング後の世界観に合う。甘さと軽さのバランスがいい。</div>
+              <div class="cafe-section-title">💬 オーダー提案</div>
+              <div class="cafe-section-text">抹茶ラテ（砂糖控えめ）+ フルーツタルト or ナッツとドライフルーツ</div>
             </div>
-            
-            <div class="cafe-section">
-              <div class="cafe-section-title">注文提案</div>
-              <div class="cafe-section-text">Lychee Osmanthus Cake + アイスラテ</div>
-            </div>
-            
+
             <div class="cafe-note">
-              <div class="cafe-note-text">登った後だから、甘いもの全然OK。でも「ごほうび」と「回復」のバランスね。</div>
+              <div class="cafe-note-text">運動後だから甘いものOKだけど、フルーツベースかナッツ系で栄養バランスを。純粋な砂糖より自然な甘さを選ぼう。</div>
             </div>
           </div>
         </div>
@@ -658,16 +670,16 @@
         <h4>📈 ルート要約</h4>
         <div class="route-grid">
           <div>
-            <div class="route-item-label">乗り換え</div>
-            <div class="route-item-value">1回</div>
+            <div class="route-item-label">移動手段</div>
+            <div class="route-item-value" id="routeTransportMode">MRT</div>
           </div>
           <div>
             <div class="route-item-label">所要時間</div>
-            <div class="route-item-value">約20分</div>
+            <div class="route-item-value" id="routeDuration">約20分</div>
           </div>
           <div>
             <div class="route-item-label">経路</div>
-            <div class="route-item-value" style="font-size: 0.75rem;">MRT East-West Line → Bugis → Downtown Line → Bendemeer</div>
+            <div class="route-item-value" id="routeDetail" style="font-size: 0.75rem;">Tiong Bahru → Bendemeer</div>
           </div>
         </div>
       </div>
@@ -675,58 +687,154 @@
       <!-- Walking Suggestion -->
       <div class="walking-card">
         <h4>🚶 ウォーキング提案</h4>
-        <div class="walking-route">Bendemeer → Tiong Bahru (Kallang River 沿い)</div>
-        <div class="walking-duration"><strong>目安:</strong> 30-40分</div>
-        <div class="walking-reason">川沿いだから景色が変わる、気分転換になる。疲れてるけど、動いた方が結局楽になるタイプでしょ、あなた。</div>
-      </div>
-
-      <!-- Final Note -->
-      <div class="final-note">
-        <p>疲れてる時のボルダリング、案外いいリセットになるよ。Before でちゃんと整えて、After で甘さを楽しむ。今日は「ごほうび」の日。ワッフルはまた今度ね。</p>
+        <div class="walking-route" id="walkingRoute">Bendemeer → Tiong Bahru</div>
+        <div class="walking-duration" id="walkingDuration"><strong>目安:</strong> 帰りに一駅分歩く</div>
+        <div class="walking-reason" id="walkingReason">帰り道、一駅手前で降りて歩くとちょうどいい。景色が変わって気分転換になる。</div>
       </div>
     </div>
   </div>
 
   <script>
+    // Quotes database - Moomin, Little Prince, Haruki Murakami
+    const quotes = [
+      { text: "どんなに遠くまで行っても、家に帰ればいつも同じ。なにも変わっちゃいない。", author: "ムーミン" },
+      { text: "たいせつなことは、目に見えないんだよ。", author: "星の王子さま" },
+      { text: "ぼくはね、太陽の沈むのを見るのが大好きなんだ。さあ、日没を見に行こう。", author: "星の王子さま" },
+      { text: "きみが、きみのバラの花をとてもたいせつに思ってるのは、そのバラの花のために時間をむだにしたからだよ。", author: "星の王子さま" },
+      { text: "完璧をめざすよりまず終わらせろ。", author: "村上春樹" },
+      { text: "痛みは避けられない。でも、苦しみはオプショナルだ。", author: "村上春樹" },
+      { text: "文章というのは、結局のところ書き手の心のあり方の反映でしかない。", author: "村上春樹" },
+      { text: "自分を変えることができるのは、自分しかいない。", author: "村上春樹" },
+      { text: "人生はいつでもやり直せるんだ。", author: "ムーミン" },
+      { text: "不幸なことが起こったら、そのなかでもなにかいいことを見つけなくちゃね。", author: "ムーミン" },
+      { text: "なにかが起きるのを待っているんじゃなくて、自分から動かなきゃ。", author: "ムーミン" },
+      { text: "心で見なくちゃ、ものごとはよく見えないってことさ。かんじんなことは、目に見えないんだよ。", author: "星の王子さま" }
+    ];
+    
+    // Weather conditions database
+    const weatherConditions = [
+      { condition: "晴れ", temp: "27-32℃", advice: "日差しが強いので、日焼け止めを忘れずに。水分補給もしっかりと。" },
+      { condition: "晴れ時々曇り", temp: "26-31℃", advice: "過ごしやすい天気。外出にぴったりの一日。" },
+      { condition: "曇り", temp: "25-29℃", advice: "湿度が高め。軽めの服装で快適に過ごそう。" },
+      { condition: "曇り時々雨", temp: "24-28℃", advice: "折りたたみ傘を持って行くと安心。雨が降ったらカフェでゆっくり。" },
+      { condition: "雨", temp: "23-27℃", advice: "雨の日は室内アクティビティがおすすめ。ボルダリングには影響なし。" },
+      { condition: "雷雨の可能性", temp: "25-30℃", advice: "午後から天気が崩れるかも。早めに行動するか、傘を持って行こう。" }
+    ];
+    
     // Venue database
     const venues = {
       CLIMB: [
-        { name: 'BFF Climb Bendemeer', address: '180 Bendemeer Road, #02-01, Singapore 339948', area: 'Bendemeer' },
-        { name: 'Boulder+ Aperia', address: '12 Kallang Avenue, #11-01 Aperia Mall, Singapore 339511', area: 'Lavender' },
-        { name: 'Boulder+ Chevron House', address: '30 Raffles Place, #02-01 Chevron House, Singapore 048622', area: 'Raffles Place' },
-        { name: 'Fit Bloc Maxwell', address: '1 Kadayanallur Street, #03-01/02 Maxwell House, Singapore 069184', area: 'Tanjong Pagar' },
-        { name: 'BFF Climb Lavender', address: '61 Kallang Bahru, #04-01, Singapore 339341', area: 'Lavender' },
-        { name: 'Boulder Movement Rochor', address: '3 Rochor Road, #01-01, Singapore 180003', area: 'Rochor' },
-        { name: 'Boulder Movement Downtown', address: '120 Telok Ayer Street, Singapore 068589', area: 'Telok Ayer' },
-        { name: 'Boulder Movement Little India', address: '118 King George\'s Avenue, #01-01, Singapore 208559', area: 'Little India' },
-        { name: 'Oyeyo Bouldering Gym', address: '51 Kaki Bukit Road, #03-01, Singapore 415932', area: 'Kaki Bukit' }
+        { name: 'BFF Climb Bendemeer', address: '2 Kallang Avenue, #01-20 CT Hub, Singapore 339407', area: 'Bendemeer', lat: 1.3113, lng: 103.8637 },
+        { name: 'Boulder+ Aperia', address: '12 Kallang Avenue, #11-01 Aperia Mall, Singapore 339511', area: 'Lavender', lat: 1.3105, lng: 103.8631 },
+        { name: 'Boulder+ Chevrons', address: '48 Boon Lay Way, #04-01 The Chevrons, Singapore 609961', area: 'Jurong East', lat: 1.3335, lng: 103.7420 },
+        { name: 'Fit Bloc Maxwell', address: '1 Kadayanallur Street, #03-01/02 Maxwell House, Singapore 069184', area: 'Tanjong Pagar', lat: 1.2795, lng: 103.8446 },
+        { name: 'BFF Climb Lavender', address: '61 Kallang Bahru, #04-01, Singapore 339341', area: 'Lavender', lat: 1.3118, lng: 103.8614 },
+        { name: 'Boulder Movement Rochor', address: '3 Rochor Road, #01-01, Singapore 180003', area: 'Rochor', lat: 1.3037, lng: 103.8535 },
+        { name: 'Boulder Movement Downtown', address: '120 Telok Ayer Street, Singapore 068589', area: 'Telok Ayer', lat: 1.2820, lng: 103.8486 },
+        { name: 'Boulder Movement Little India', address: '118 King George\'s Avenue, #01-01, Singapore 208559', area: 'Little India', lat: 1.3089, lng: 103.8567 },
+        { name: 'Oyeyo Bouldering Gym', address: '51 Kaki Bukit Road, #03-01, Singapore 415932', area: 'Kaki Bukit', lat: 1.3347, lng: 103.9002 }
       ],
       MUSEUM: [
-        { name: 'National Gallery Singapore', address: '1 St Andrew\'s Road, Singapore 178957', area: 'City Hall' },
-        { name: 'SAM at Tanjong Pagar Distripark', address: '39 Keppel Road, Singapore 089065', area: 'Tanjong Pagar' },
-        { name: 'ArtScience Museum', address: '6 Bayfront Avenue, Singapore 018974', area: 'Marina Bay' }
+        { name: 'National Gallery Singapore', address: '1 St Andrew\'s Road, Singapore 178957', area: 'City Hall', lat: 1.2903, lng: 103.8519 },
+        { name: 'SAM at Tanjong Pagar Distripark', address: '39 Keppel Road, Singapore 089065', area: 'Tanjong Pagar', lat: 1.2692, lng: 103.8433 },
+        { name: 'ArtScience Museum', address: '6 Bayfront Avenue, Singapore 018974', area: 'Marina Bay', lat: 1.2862, lng: 103.8593 }
       ],
       SHOP: [
-        { name: 'Haji Lane (ヴィンテージ・雑貨)', address: 'Haji Lane, Singapore', area: 'Bugis' },
-        { name: 'Queensway Shopping Centre (スポーツ用品)', address: '1 Queensway, Singapore 149053', area: 'Queenstown' },
-        { name: 'Books Actually (独立系書店)', address: '9 Yong Siak Street, Singapore 168645', area: 'Tiong Bahru' },
-        { name: 'Sifr Aromatics (香水・アロマ)', address: '42 Arab Street, Singapore 199741', area: 'Kampong Glam' },
-        { name: 'Cat Socrates (文具・雑貨)', address: '448 Joo Chiat Road, Singapore 427671', area: 'Joo Chiat' }
+        { name: 'Haji Lane (ヴィンテージ・雑貨)', address: 'Haji Lane, Singapore', area: 'Bugis', lat: 1.3007, lng: 103.8591 },
+        { name: 'Queensway Shopping Centre (スポーツ用品)', address: '1 Queensway, Singapore 149053', area: 'Queenstown', lat: 1.2942, lng: 103.8036 },
+        { name: 'Books Actually (独立系書店)', address: '9 Yong Siak Street, Singapore 168645', area: 'Tiong Bahru', lat: 1.2856, lng: 103.8267 },
+        { name: 'Sifr Aromatics (香水・アロマ)', address: '42 Arab Street, Singapore 199741', area: 'Kampong Glam', lat: 1.3020, lng: 103.8588 },
+        { name: 'Cat Socrates (文具・雑貨)', address: '448 Joo Chiat Road, Singapore 427671', area: 'Joo Chiat', lat: 1.3145, lng: 103.9032 }
       ],
       CAFE: [
-        { name: 'Arab Street カフェ巡り', address: 'Arab Street Area, Singapore', area: 'Kampong Glam' },
-        { name: 'Joo Chiat カフェ巡り', address: 'Joo Chiat Road Area, Singapore', area: 'Joo Chiat' },
-        { name: 'Tanjong Pagar カフェ巡り', address: 'Tanjong Pagar Road Area, Singapore', area: 'Tanjong Pagar' },
-        { name: 'Holland Village カフェ巡り', address: 'Holland Avenue Area, Singapore', area: 'Holland Village' }
+        { name: 'Arab Street カフェ巡り', address: 'Arab Street Area, Singapore', area: 'Kampong Glam', lat: 1.3020, lng: 103.8588 },
+        { name: 'Joo Chiat カフェ巡り', address: 'Joo Chiat Road Area, Singapore', area: 'Joo Chiat', lat: 1.3145, lng: 103.9032 },
+        { name: 'Tanjong Pagar カフェ巡り', address: 'Tanjong Pagar Road Area, Singapore', area: 'Tanjong Pagar', lat: 1.2765, lng: 103.8438 },
+        { name: 'Holland Village カフェ巡り', address: 'Holland Avenue Area, Singapore', area: 'Holland Village', lat: 1.3115, lng: 103.7960 }
       ],
       WALK: [
-        { name: 'Singapore Botanic Gardens (植物園)', address: '1 Cluny Road, Singapore 259569', area: 'Tanglin' },
-        { name: 'East Coast Park (海沿い)', address: 'East Coast Park Service Road, Singapore', area: 'East Coast' },
-        { name: 'MacRitchie Reservoir (森林)', address: 'MacRitchie Reservoir Park, Singapore', area: 'MacRitchie' },
-        { name: 'Kallang River 沿い散歩', address: 'Kallang River, Singapore', area: 'Kallang' },
-        { name: 'Fort Canning Park (歴史公園)', address: 'River Valley Road, Singapore 179037', area: 'Fort Canning' }
+        { name: 'Singapore Botanic Gardens (植物園)', address: '1 Cluny Road, Singapore 259569', area: 'Tanglin', lat: 1.3138, lng: 103.8159 },
+        { name: 'East Coast Park (海沿い)', address: 'East Coast Park Service Road, Singapore', area: 'East Coast', lat: 1.3006, lng: 103.9148 },
+        { name: 'MacRitchie Reservoir (森林)', address: 'MacRitchie Reservoir Park, Singapore', area: 'MacRitchie', lat: 1.3420, lng: 103.8200 },
+        { name: 'Kallang River 沿い散歩', address: 'Kallang River, Singapore', area: 'Kallang', lat: 1.3098, lng: 103.8652 },
+        { name: 'Fort Canning Park (歴史公園)', address: 'River Valley Road, Singapore 179037', area: 'Fort Canning', lat: 1.2935, lng: 103.8467 }
       ]
     };
+
+    // Cafe database with accurate locations
+    const cafes = [
+      // Lavender/Bendemeer area
+      { name: 'Two Bakers', address: '88 Horne Road, Singapore 209083', area: 'Lavender', lat: 1.3100, lng: 103.8585 },
+      { name: 'Chye Seng Huat Hardware', address: '150 Tyrwhitt Road, Singapore 207563', area: 'Lavender', lat: 1.3100, lng: 103.8575 },
+      { name: 'SYIP', address: '72 Bendemeer Road, #01-05, Singapore 339941', area: 'Bendemeer', lat: 1.3195, lng: 103.8625 },
+      { name: 'Keong Saik Bakery', address: '70 Bendemeer Road, #01-03, Singapore 339940', area: 'Bendemeer', lat: 1.3198, lng: 103.8620 },
+      
+      // Tanjong Pagar/Maxwell area
+      { name: 'Equate Coffee', address: '1 Tanjong Pagar Plaza, #02-25, Singapore 082001', area: 'Tanjong Pagar', lat: 1.2765, lng: 103.8438 },
+      { name: 'Cafe Kreams', address: '32 Maxwell Road, #01-07 Maxwell Chambers, Singapore 069115', area: 'Tanjong Pagar', lat: 1.2795, lng: 103.8446 },
+      { name: 'Five Oars Coffee', address: '43 Tanjong Pagar Road, Singapore 088463', area: 'Tanjong Pagar', lat: 1.2765, lng: 103.8432 },
+      { name: 'Acoustics Coffee Bar', address: '61 Neil Road, Singapore 088895', area: 'Tanjong Pagar', lat: 1.2775, lng: 103.8420 },
+      { name: 'Kyuukei Coffee (KADA)', address: '5 Kadayanallur Street, #01-01, Singapore 069184', area: 'Tanjong Pagar', lat: 1.2795, lng: 103.8448 },
+      
+      // CBD/Raffles Place/Telok Ayer area
+      { name: 'Sarnies', address: '136 Telok Ayer Street, Singapore 068601', area: 'Telok Ayer', lat: 1.2815, lng: 103.8475 },
+      { name: 'Upside Down Coffee', address: '73 Amoy Street, Singapore 069892', area: 'Telok Ayer', lat: 1.2800, lng: 103.8460 },
+      { name: 'My Awesome Cafe', address: '202 Telok Ayer Street, Singapore 068639', area: 'Telok Ayer', lat: 1.2825, lng: 103.8480 },
+      { name: 'The Providore (Raffles)', address: '1 Raffles Place, #01-01, Singapore 048616', area: 'Raffles Place', lat: 1.2844, lng: 103.8511 },
+      { name: 'Apartment Coffee', address: '1 Keong Saik Road, Singapore 089109', area: 'Chinatown', lat: 1.2785, lng: 103.8426 },
+      { name: 'Common Man Coffee Roasters', address: '22 Martin Road, Singapore 239058', area: 'Robertson Quay', lat: 1.2889, lng: 103.8389 },
+      
+      // Jurong East/West area (shopping malls + standalone)
+      { name: 'Miam Miam (Westgate)', address: '3 Gateway Drive, #02-27/29 Westgate, Singapore 608532', area: 'Jurong East', lat: 1.3345, lng: 103.7425 },
+      { name: 'Fluff Stack (Westgate)', address: '3 Gateway Drive, #BA-K1 Westgate, Singapore 608532', area: 'Jurong East', lat: 1.3345, lng: 103.7425 },
+      { name: 'Paris Baguette (JEM)', address: '50 Jurong Gateway Road, JEM, Singapore 608549', area: 'Jurong East', lat: 1.3335, lng: 103.7430 },
+      { name: 'Awfully Chocolate (Westgate)', address: '3 Gateway Drive, #B1-K1 Westgate, Singapore 608532', area: 'Jurong East', lat: 1.3345, lng: 103.7425 },
+      { name: 'Suzuki Cafe', address: '8 Chin Bee Avenue, Singapore 619932', area: 'Jurong West', lat: 1.3280, lng: 103.7485 },
+      { name: 'WellSmoocht', address: '319 Jurong East Street 31, #01-58, Singapore 600319', area: 'Jurong East', lat: 1.3340, lng: 103.7385 },
+      { name: 'Dewgather (Star Vista)', address: '1 Vista Exchange Green, #01-46, Singapore 138617', area: 'Buona Vista', lat: 1.3065, lng: 103.7875 },
+      
+      // Little India/Bugis area
+      { name: 'Cafe Monochrome', address: '10 Jalan Besar, Singapore 208787', area: 'Jalan Besar', lat: 1.3055, lng: 103.8545 },
+      { name: 'Maison Ikkoku', address: '20 Kandahar Street, Singapore 198885', area: 'Kampong Glam', lat: 1.3030, lng: 103.8600 },
+      
+      // East area
+      { name: 'Foreword Coffee', address: '1 Joo Chiat Place, Singapore 427744', area: 'Joo Chiat', lat: 1.3140, lng: 103.9025 },
+      
+      // City Hall/Marina area
+      { name: 'The Glasshouse', address: '1 Fullerton Road, #02-02B, Singapore 049213', area: 'Marina Bay', lat: 1.2860, lng: 103.8540 },
+      { name: 'The Muffin', address: '60B Prinsep Street, Singapore 188662', area: 'Bras Basah', lat: 1.2995, lng: 103.8505 },
+      
+      // Nylon for balance
+      { name: 'Nylon Coffee Roasters', address: '4 Everton Park, #01-40, Singapore 080004', area: 'Tanjong Pagar', lat: 1.2765, lng: 103.8425 }
+    ];
+
+    // Calculate distance between two points
+    function getDistance(lat1, lng1, lat2, lng2) {
+      const R = 6371; // km
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLng = (lng2 - lng1) * Math.PI / 180;
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLng/2) * Math.sin(dLng/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c;
+    }
+
+    // Find nearest cafes (excluding Tiong Bahru area cafes per user preferences)
+    function findNearbyCafes(venueLat, venueLng, count = 2) {
+      const distances = cafes
+        .filter(cafe => cafe.area !== 'Tiong Bahru') // Exclude Tiong Bahru
+        .map(cafe => ({
+          ...cafe,
+          distance: getDistance(venueLat, venueLng, cafe.lat, cafe.lng)
+        }));
+      distances.sort((a, b) => a.distance - b.distance);
+      
+      console.log('Venue location:', venueLat, venueLng);
+      console.log('Nearest cafes:', distances.slice(0, 3).map(c => ({ name: c.name, distance: c.distance.toFixed(2) + 'km' })));
+      
+      return distances.slice(0, count);
+    }
 
     // Set today's date
     document.getElementById('date').value = new Date().toISOString().split('T')[0];
@@ -761,8 +869,18 @@
       const timeStart = document.getElementById('timeStart').value;
       const timeEnd = document.getElementById('timeEnd').value;
       
-      // Update plan with selected venue
-      updatePlanContent(selectedVenue, mainIntent, origin, timeStart, timeEnd);
+      // Find nearby cafes
+      const nearbyCafes = findNearbyCafes(selectedVenue.lat, selectedVenue.lng, 2);
+      
+      // Add Google Maps URLs to cafes
+      nearbyCafes.forEach(cafe => {
+        if (!cafe.googleMapsUrl) {
+          cafe.googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cafe.name + ' ' + cafe.address)}`;
+        }
+      });
+      
+      // Update plan with selected venue and cafes
+      updatePlanContent(selectedVenue, mainIntent, origin, timeStart, timeEnd, nearbyCafes);
       
       // Show loading state
       btn.innerHTML = '<span class="loading"></span> プランを作成中...';
@@ -782,33 +900,95 @@
       }, 1500);
     }
 
-    function updatePlanContent(venue, intent, origin, timeStart, timeEnd) {
+    function updatePlanContent(venue, intent, origin, timeStart, timeEnd, nearbyCafes) {
+      // Calculate timeline
+      const [startHour, startMin] = timeStart.split(':').map(Number);
+      const [endHour, endMin] = timeEnd.split(':').map(Number);
+      
+      const totalMinutes = (endHour * 60 + endMin) - (startHour * 60 + startMin);
+      const homeToBeforeDuration = 30; // 30 min to first cafe
+      const beforeDuration = 60; // 1 hour
+      const transitToVenueDuration = 30; // 30 min
+      const afterDuration = 45; // 45 min
+      const transitFromVenueDuration = 15; // 15 min
+      const homeFromAfterDuration = 30; // 30 min home
+      const mainDuration = totalMinutes - homeToBeforeDuration - beforeDuration - transitToVenueDuration - transitFromVenueDuration - afterDuration - homeFromAfterDuration;
+      
+      const homeToBeforeStart = `${String(startHour).padStart(2, '0')}:${String(startMin).padStart(2, '0')}`;
+      const homeToBeforeEndMin = startHour * 60 + startMin + homeToBeforeDuration;
+      const homeToBeforeEnd = `${String(Math.floor(homeToBeforeEndMin / 60)).padStart(2, '0')}:${String(homeToBeforeEndMin % 60).padStart(2, '0')}`;
+      
+      const beforeStart = homeToBeforeEnd;
+      const beforeEndMin = homeToBeforeEndMin + beforeDuration;
+      const beforeEnd = `${String(Math.floor(beforeEndMin / 60)).padStart(2, '0')}:${String(beforeEndMin % 60).padStart(2, '0')}`;
+      
+      const transitToVenueStart = beforeEnd;
+      const transitToVenueEndMin = beforeEndMin + transitToVenueDuration;
+      const transitToVenueEnd = `${String(Math.floor(transitToVenueEndMin / 60)).padStart(2, '0')}:${String(transitToVenueEndMin % 60).padStart(2, '0')}`;
+      
+      const mainStart = transitToVenueEnd;
+      const mainEndMin = transitToVenueEndMin + mainDuration;
+      const mainEnd = `${String(Math.floor(mainEndMin / 60)).padStart(2, '0')}:${String(mainEndMin % 60).padStart(2, '0')}`;
+      
+      const transitFromVenueStart = mainEnd;
+      const transitFromVenueEndMin = mainEndMin + transitFromVenueDuration;
+      const transitFromVenueEnd = `${String(Math.floor(transitFromVenueEndMin / 60)).padStart(2, '0')}:${String(transitFromVenueEndMin % 60).padStart(2, '0')}`;
+      
+      const afterStart = transitFromVenueEnd;
+      const afterEndMin = transitFromVenueEndMin + afterDuration;
+      const afterEnd = `${String(Math.floor(afterEndMin / 60)).padStart(2, '0')}:${String(afterEndMin % 60).padStart(2, '0')}`;
+      
+      const homeFromAfterStart = afterEnd;
+      const homeTime = `${String(Math.floor((afterEndMin + homeFromAfterDuration) / 60)).padStart(2, '0')}:${String((afterEndMin + homeFromAfterDuration) % 60).padStart(2, '0')}`;
+      
       // Update overview
-      const overviewText = document.querySelector('.overview-card p');
-      const overviewTime = document.querySelector('.overview-card p:last-child');
+      // Update timeline
+      const timelineItems = document.querySelectorAll('.timeline-item');
       
-      let message = '';
-      if (intent === 'CLIMB') {
-        message = '疲れてるのにボルダリング、いいじゃん。体を動かすと案外すっきりするよ。でもその前に、ちゃんと整えておこう。帰ってきてからは、甘いものでごほうび。';
-      } else if (intent === 'MUSEUM') {
-        message = 'アートを見に行く日か。ゆっくり観て、感じて。前後のカフェで余韻を楽しもう。';
-      } else if (intent === 'SHOP') {
-        message = 'お気に入りを探しに行く日。焦らず、ゆっくり。疲れたらカフェで休憩。';
-      } else if (intent === 'CAFE') {
-        message = 'カフェ巡りの日。いい空気感の場所を見つけよう。甘いものは禁止じゃないけど、暴走しないでね。';
-      } else if (intent === 'WALK') {
-        message = '歩く日。体を動かすとすっきりするよ。無理しないペースで、景色を楽しんで。';
-      }
+      // Home to Before cafe
+      timelineItems[0].querySelector('.timeline-time').textContent = `${homeToBeforeStart} - ${homeToBeforeEnd}`;
+      const homeToBeforeLocation = timelineItems[0].querySelector('.timeline-location');
+      const homeToBeforeUrl = `https://www.google.com/maps/dir/${encodeURIComponent(origin)}/${encodeURIComponent(nearbyCafes[0].name + ' Singapore')}`;
+      homeToBeforeLocation.innerHTML = `${origin} → ${nearbyCafes[0].name} <a href="${homeToBeforeUrl}" target="_blank" style="color: #3b82f6; text-decoration: underline; margin-left: 0.5rem; font-size: 0.75rem;">🗺️</a>`;
       
-      overviewText.textContent = message;
-      overviewTime.textContent = `${timeStart} - ${timeEnd} / ${origin} → ${venue.name} → 帰宅`;
+      // Before cafe
+      timelineItems[1].querySelector('.timeline-time').textContent = `${beforeStart} - ${beforeEnd}`;
+      const beforeLocationDiv = timelineItems[1].querySelector('.timeline-location');
+      beforeLocationDiv.innerHTML = `${nearbyCafes[0].name} <a href="${nearbyCafes[0].googleMapsUrl}" target="_blank" class="map-link before" style="margin-left: 0.5rem; display: inline-flex; font-size: 0.75rem;">🗺️</a>`;
       
-      // Update timeline main venue
-      const mainLocation = document.querySelectorAll('.timeline-location')[1];
-      mainLocation.innerHTML = `${venue.name}<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(venue.name + ' Singapore')}" target="_blank" class="map-link after" style="margin-left: 0.5rem; display: inline-flex;">🗺️ マップ</a>`;
+      // Transit to venue
+      timelineItems[2].querySelector('.timeline-time').textContent = `${transitToVenueStart} - ${transitToVenueEnd}`;
+      const transitToVenueLocation = timelineItems[2].querySelector('.timeline-location');
+      const transitToVenueUrl = `https://www.google.com/maps/dir/${encodeURIComponent(nearbyCafes[0].name + ' Singapore')}/${encodeURIComponent(venue.name + ' Singapore')}`;
+      transitToVenueLocation.innerHTML = `${nearbyCafes[0].name} → ${venue.name} <a href="${transitToVenueUrl}" target="_blank" style="color: #3b82f6; text-decoration: underline; margin-left: 0.5rem; font-size: 0.75rem;">🗺️</a>`;
+      
+      // Main
+      timelineItems[3].querySelector('.timeline-time').textContent = `${mainStart} - ${mainEnd}`;
+      const mainLocation = timelineItems[3].querySelector('.timeline-location');
+      mainLocation.innerHTML = `${venue.name} <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(venue.name + ' Singapore')}" target="_blank" class="map-link after" style="margin-left: 0.5rem; display: inline-flex; font-size: 0.75rem;">🗺️</a>`;
+      
+      // Transit from venue
+      timelineItems[4].querySelector('.timeline-time').textContent = `${transitFromVenueStart} - ${transitFromVenueEnd}`;
+      const transitFromVenueLocation = timelineItems[4].querySelector('.timeline-location');
+      const transitFromVenueUrl = `https://www.google.com/maps/dir/${encodeURIComponent(venue.name + ' Singapore')}/${encodeURIComponent(nearbyCafes[1].name + ' Singapore')}`;
+      transitFromVenueLocation.innerHTML = `${venue.name} → ${nearbyCafes[1].name} <a href="${transitFromVenueUrl}" target="_blank" style="color: #3b82f6; text-decoration: underline; margin-left: 0.5rem; font-size: 0.75rem;">🗺️</a>`;
+      
+      // After cafe
+      timelineItems[5].querySelector('.timeline-time').textContent = `${afterStart} - ${afterEnd}`;
+      const afterLocationDiv = timelineItems[5].querySelector('.timeline-location');
+      afterLocationDiv.innerHTML = `${nearbyCafes[1].name} <a href="${nearbyCafes[1].googleMapsUrl}" target="_blank" class="map-link after" style="margin-left: 0.5rem; display: inline-flex; font-size: 0.75rem;">🗺️</a>`;
+      
+      // Transit home
+      timelineItems[6].querySelector('.timeline-time').textContent = `${homeFromAfterStart} - ${homeTime}`;
+      const homeFromAfterLocation = timelineItems[6].querySelector('.timeline-location');
+      const homeFromAfterUrl = `https://www.google.com/maps/dir/${encodeURIComponent(nearbyCafes[1].name + ' Singapore')}/${encodeURIComponent(origin)}`;
+      homeFromAfterLocation.innerHTML = `${nearbyCafes[1].name} → ${origin} <a href="${homeFromAfterUrl}" target="_blank" style="color: #3b82f6; text-decoration: underline; margin-left: 0.5rem; font-size: 0.75rem;">🗺️</a>`;
+      
+      // Home
+      timelineItems[7].querySelector('.timeline-time').textContent = homeTime;
       
       // Update activity text
-      const mainDetails = document.querySelectorAll('.timeline-details')[2];
+      const mainDetails = timelineItems[3].querySelector('.timeline-details');
       if (intent === 'CLIMB') {
         mainDetails.textContent = '登る。';
       } else if (intent === 'MUSEUM') {
@@ -820,6 +1000,101 @@
       } else if (intent === 'WALK') {
         mainDetails.textContent = '歩く。';
       }
+      
+      // Add transport mode to timeline items
+      const transportMode = '🚇 MRT';
+      timelineItems[0].querySelector('.timeline-details').textContent = transportMode;
+      timelineItems[2].querySelector('.timeline-details').textContent = transportMode;
+      timelineItems[4].querySelector('.timeline-details').textContent = transportMode;
+      timelineItems[6].querySelector('.timeline-details').textContent = transportMode;
+      
+      // Update cafe cards
+      const cafeCards = document.querySelectorAll('.cafe-card');
+      
+      // Update Before cafe with healthier options
+      cafeCards[0].querySelector('h4').textContent = nearbyCafes[0].name;
+      cafeCards[0].querySelector('.cafe-address').textContent = nearbyCafes[0].address;
+      
+      // Update Before cafe link
+      const beforeLink = cafeCards[0].querySelector('a');
+      beforeLink.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(nearbyCafes[0].name + ' Singapore')}`;
+      
+      const beforeOrder = intent === 'CLIMB' 
+        ? 'Flat White + アボカドトースト or ギリシャヨーグルトボウル' 
+        : 'お好きなドリンク + サラダボウル or オープンサンド';
+      cafeCards[0].querySelector('.cafe-section-text').textContent = beforeOrder;
+      
+      const beforeNote = intent === 'CLIMB' 
+        ? '甘いものに偏りがちだから、タンパク質と健康的な脂質を意識して。アボカドかヨーグルトで体を整えよう。' 
+        : '甘さより栄養バランス。野菜とタンパク質をしっかり摂ろう。';
+      cafeCards[0].querySelector('.cafe-note-text').textContent = beforeNote;
+      
+      // Update After cafe with healthier sweet options
+      cafeCards[1].querySelector('h4').textContent = nearbyCafes[1].name;
+      cafeCards[1].querySelector('.cafe-address').textContent = nearbyCafes[1].address;
+      
+      // Update After cafe link
+      const afterLink = cafeCards[1].querySelector('a');
+      afterLink.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(nearbyCafes[1].name + ' Singapore')}`;
+      
+      const afterOrder = intent === 'CLIMB' 
+        ? '抹茶ラテ（砂糖控えめ）+ フルーツタルト or ナッツとドライフルーツ' 
+        : 'スムージー + エネルギーボール or ダークチョコレート';
+      cafeCards[1].querySelector('.cafe-section-text').textContent = afterOrder;
+      
+      const afterNote = intent === 'CLIMB' 
+        ? '運動後だから甘いものOKだけど、フルーツベースかナッツ系で栄養バランスを。純粋な砂糖より自然な甘さを選ぼう。' 
+        : '甘いもの食べたい気持ちはわかる。でもフルーツやナッツで満足感を得る方が体に優しい。';
+      cafeCards[1].querySelector('.cafe-note-text').textContent = afterNote;
+      
+      // Update route summary with transport details
+      document.getElementById('routeTransportMode').textContent = '🚇 MRT';
+      document.getElementById('routeDuration').textContent = '約30-40分';
+      document.getElementById('routeDetail').textContent = `${origin} → ${venue.area} (MRT利用)`;
+      
+      // Update walking suggestion - one station BEFORE home
+      const walkingRouteEl = document.getElementById('walkingRoute');
+      const walkingDurationEl = document.getElementById('walkingDuration');
+      const walkingReasonEl = document.getElementById('walkingReason');
+      
+      // Suggest one station before reaching home (from After Cafe direction)
+      let walkStation = '';
+      
+      // Determine the station one before home
+      // 80 Chay Yan Street is near Aljunied MRT
+      if (origin.includes('Chay Yan') || origin.includes('Aljunied')) {
+        // Coming from west: Paya Lebar -> Aljunied
+        // Coming from east: Eunos -> Aljunied
+        walkStation = 'Paya Lebar'; // Most common route from CBD
+      } else if (origin === 'Tiong Bahru' || origin.includes('Tiong Bahru')) {
+        walkStation = 'Outram Park';
+      } else if (origin === 'Tanjong Pagar' || origin.includes('Tanjong Pagar')) {
+        walkStation = 'Telok Ayer';
+      } else if (origin === 'Chinatown' || origin.includes('Chinatown')) {
+        walkStation = 'Clarke Quay';
+      } else if (origin === 'Bugis' || origin.includes('Bugis')) {
+        walkStation = 'Lavender';
+      } else if (origin === 'Lavender' || origin.includes('Lavender')) {
+        walkStation = 'Kallang';
+      } else {
+        walkStation = nearbyCafes[1].area; // Fallback to After Cafe area
+      }
+      
+      const walkUrl = `https://www.google.com/maps/dir/${encodeURIComponent(walkStation + ' MRT Singapore')}/${encodeURIComponent(origin)}/?dirflg=w`;
+      
+      walkingRouteEl.innerHTML = `<a href="${walkUrl}" target="_blank" style="color: #1e293b; text-decoration: underline;">${walkStation} → ${origin}</a>`;
+      walkingDurationEl.innerHTML = `<strong>目安:</strong> ${walkStation}で降りて${origin}まで歩く（15-20分）`;
+      walkingReasonEl.textContent = `帰る前に${walkStation}で一駅早く降りて歩くと、程よい運動になる。カフェで座ってたから、体を動かしてから帰ろう。`;
+      
+      // Update daily quote
+      const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+      document.getElementById('quoteText').textContent = `"${randomQuote.text}"`;
+      document.getElementById('quoteAuthor').textContent = `- ${randomQuote.author}`;
+      
+      // Update weather
+      const randomWeather = weatherConditions[Math.floor(Math.random() * weatherConditions.length)];
+      const weatherTextEl = document.getElementById('weatherText');
+      weatherTextEl.textContent = `${randomWeather.condition}、気温${randomWeather.temp}。${randomWeather.advice}`;
     }
   </script>
 </body>
