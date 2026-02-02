@@ -1,177 +1,715 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contextual Me v14.0</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Playfair+Display:italic&display=swap');
-        body { font-family: 'Noto Sans JP', sans-serif; background-color: #020617; color: #f1f5f9; margin: 0; }
-        .serif { font-family: 'Playfair Display', serif; }
-        .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        .btn-gradient { background: linear-gradient(135deg, #6366f1 0%, #4338ca 100%); }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>生活目線の1日プラン</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Meiryo', sans-serif;
+      background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 50%, #fecaca 100%);
+      min-height: 100vh;
+    }
+
+    .header {
+      background: linear-gradient(90deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+      color: white;
+      padding: 2rem;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .header h1 {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      font-family: Georgia, serif;
+    }
+
+    .header p {
+      color: #cbd5e1;
+      font-size: 0.875rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .card h2 {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+      color: #1e293b;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .form-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #475569;
+      margin-bottom: 0.5rem;
+    }
+
+    input, select {
+      padding: 0.75rem 1rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      transition: all 0.3s;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: #f43f5e;
+      box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.1);
+    }
+
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid #e2e8f0;
+      margin-top: 1.5rem;
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      font-size: 0.875rem;
+      color: #475569;
+    }
+
+    .checkbox-label input {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(90deg, #f43f5e 0%, #f59e0b 100%);
+      color: white;
+      border: none;
+      border-radius: 0.75rem;
+      font-size: 1.125rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 2rem;
+      transition: all 0.3s;
+      box-shadow: 0 10px 25px rgba(244, 63, 94, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 30px rgba(244, 63, 94, 0.4);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .plan-section {
+      display: none;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    .plan-section.show {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .overview-card {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      color: white;
+      border-radius: 1rem;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+
+    .overview-card h3 {
+      font-size: 1.125rem;
+      margin-bottom: 1rem;
+    }
+
+    .overview-card p {
+      line-height: 1.75;
+      color: #e2e8f0;
+    }
+
+    .timeline {
+      position: relative;
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .timeline-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 0.25rem;
+    }
+
+    .timeline-dot.before { background: #3b82f6; }
+    .timeline-dot.main { background: #f43f5e; }
+    .timeline-dot.after { background: #f59e0b; }
+    .timeline-dot.transit { background: #94a3b8; }
+    .timeline-dot.home { background: #cbd5e1; }
+
+    .timeline-content {
+      flex: 1;
+    }
+
+    .timeline-time {
+      font-size: 0.75rem;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .timeline-title {
+      font-weight: 600;
+      color: #1e293b;
+      margin: 0.25rem 0;
+    }
+
+    .timeline-location {
+      font-size: 0.875rem;
+      color: #475569;
+    }
+
+    .timeline-details {
+      font-size: 0.875rem;
+      color: #64748b;
+      margin-top: 0.25rem;
+    }
+
+    .cafe-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .cafe-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .cafe-card {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .cafe-card-header {
+      height: 4px;
+    }
+
+    .cafe-card-header.before {
+      background: linear-gradient(90deg, #3b82f6 0%, #06b6d4 100%);
+    }
+
+    .cafe-card-header.after {
+      background: linear-gradient(90deg, #f59e0b 0%, #f43f5e 100%);
+    }
+
+    .cafe-card-body {
+      padding: 1.5rem;
+    }
+
+    .cafe-card h4 {
+      font-size: 1.125rem;
+      font-weight: bold;
+      color: #1e293b;
+      margin-bottom: 0.5rem;
+    }
+
+    .cafe-address {
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-bottom: 1rem;
+    }
+
+    .map-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 1rem;
+      font-size: 0.75rem;
+      text-decoration: none;
+      transition: all 0.3s;
+      margin-bottom: 1rem;
+    }
+
+    .map-link.before {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .map-link.after {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .map-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .cafe-section {
+      margin-bottom: 1rem;
+    }
+
+    .cafe-section-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #475569;
+      margin-bottom: 0.5rem;
+    }
+
+    .cafe-section-text {
+      font-size: 0.875rem;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    .cafe-note {
+      padding-top: 1rem;
+      border-top: 1px solid #e2e8f0;
+      margin-top: 1rem;
+    }
+
+    .cafe-note-text {
+      font-size: 0.875rem;
+      color: #64748b;
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    .route-card {
+      background: linear-gradient(135deg, #dbeafe 0%, #e0f2fe 100%);
+      border: 1px solid #bfdbfe;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .route-card h4 {
+      font-weight: bold;
+      color: #1e293b;
+      margin-bottom: 1rem;
+    }
+
+    .route-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    @media (min-width: 768px) {
+      .route-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .route-item-label {
+      font-size: 0.875rem;
+      color: #64748b;
+      margin-bottom: 0.25rem;
+    }
+
+    .route-item-value {
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    .walking-card {
+      background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+      border: 1px solid #6ee7b7;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .walking-card h4 {
+      font-weight: bold;
+      color: #1e293b;
+      margin-bottom: 1rem;
+    }
+
+    .walking-route {
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 0.75rem;
+    }
+
+    .walking-duration {
+      font-size: 0.875rem;
+      color: #475569;
+      margin-bottom: 1rem;
+    }
+
+    .walking-reason {
+      font-size: 0.875rem;
+      color: #475569;
+      font-style: italic;
+      line-height: 1.6;
+      padding-top: 1rem;
+      border-top: 1px solid #6ee7b7;
+    }
+
+    .final-note {
+      background: linear-gradient(135deg, #fef3c7 0%, #fecaca 50%, #fed7aa 100%);
+      border: 1px solid #fcd34d;
+      border-radius: 1rem;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .final-note p {
+      font-size: 1.125rem;
+      color: #1e293b;
+      line-height: 1.75;
+      font-family: Georgia, serif;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 1.25rem;
+      height: 1.25rem;
+      border: 2px solid white;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
 </head>
 <body>
-    <div id="root"></div>
+  <!-- Header -->
+  <div class="header">
+    <div class="header-content">
+      <h1>☕ 生活目線の1日プラン</h1>
+      <p>知性のある友人が、あなたの決定を起点に、丁寧にプランを整えます</p>
+    </div>
+  </div>
 
-    <script type="text/babel">
-        const { useState, useEffect } = React;
+  <!-- Container -->
+  <div class="container">
+    <!-- Input Form -->
+    <div class="card">
+      <h2>📍 今日の予定を入力</h2>
+      
+      <div class="form-grid">
+        <div class="form-group">
+          <label>日付</label>
+          <input type="date" id="date" value="">
+        </div>
 
-        const Icon = ({ name, className = "w-4 h-4" }) => {
-            useEffect(() => { if (window.lucide) window.lucide.createIcons(); }, [name]);
-            return <i data-lucide={name} className={className}></i>;
-        };
+        <div class="form-group">
+          <label>出発地</label>
+          <input type="text" id="origin" value="Tiong Bahru">
+        </div>
 
-        const MASTER_DATA = {
-            gyms: [
-                { id: 'bm_bugis', name: "Boulder Movement Bugis", area: "Bugis", menu: "終了後のプロテイン補給。都会の喧騒を離れてリセット。" },
-                { id: 'bm_rochor', name: "Boulder Movement Rochor", area: "Rochor", menu: "テクニカルな課題への挑戦。" },
-                { id: 'oyeyo', name: "Oyeyo Bouldering Studio", area: "Little India", menu: "終了後は心地よい疲労感を。" },
-                { id: 'fb_maxwell', name: "Fit Bloc Maxwell", area: "Maxwell", menu: "最新設備。シャワーで完全にリセット。" },
-                { id: 'bp_chev', name: "Boulder+ Chevrons", area: "Jurong", menu: "広い壁でのダイナミックなトレーニング。" },
-                { id: 'bp_lavender', name: "Boulder+ Lavender", area: "Lavender", menu: "持久力を。Aperia Mall内。" }
-            ],
-            museums: [
-                { id: 'ng', name: "National Gallery Singapore", area: "City Hall", menu: "展示を堪能。歴史的な空間でアートに浸る。" },
-                { id: 'sam_tp', name: "SAM at Tanjong Pagar Distripark", area: "Tanjong Pagar", menu: "現代アートの広大な空間。1階のカフェもおすすめ。" },
-                { id: 'asm', name: "ArtScience Museum", area: "Marina Bay", menu: "未来的なデジタルアート体験。" }
-            ],
-            cafes: [
-                { id: 0, name: "The Book Cafe", area: "Robertson Quay", menu: "Apple Pie", desc: "読書の聖地。ソファ席で至福の時間を。" },
-                { id: 1, name: "Apartment Coffee", area: "Lavender", menu: "Filter Coffee", desc: "静寂と美しいコーヒー。" },
-                { id: 2, name: "The Glasshouse", area: "City Hall", menu: "Salmon Smorrebrod", desc: "明るい温室のような空間。" },
-                { id: 3, name: "Bearded Bella", area: "Tanjong Pagar", menu: "Flat White", desc: "帰り道に立ち寄る贅沢な一杯。" },
-                { id: 4, name: "Common Man Coffee", area: "Robertson Quay", menu: "Veggie Wonderland", desc: "リバーサイドの読書タイム。" },
-                { id: 5, name: "Kurasu Singapore", area: "Bras Basah", menu: "Matcha Latte", desc: "日本発のミニマルな空間。" },
-                { id: 6, name: "Lucid", area: "Hamilton Road", menu: "Iced White", desc: "無機質で静かな空間。" },
-                { id: 7, name: "Atlas Coffeehouse", area: "Bukit Timah", menu: "Banana Pancake", desc: "エネルギーチャージの名店。" },
-                { id: 8, name: "Nylon Coffee Roasters", area: "Everton Park", menu: "Filter Coffee", desc: "こだわり抜かれた一杯。" },
-                { id: 9, name: "PUNCH", area: "North Canal Road", menu: "Earl Grey Pancakes", desc: "中庭で過ごす贅沢な一息。" }
-            ]
-        };
+        <div class="form-group">
+          <label>開始時間</label>
+          <input type="time" id="timeStart" value="12:00">
+        </div>
 
-        const App = () => {
-            const [view, setView] = useState('home');
-            const [intent, setIntent] = useState('CLIMB');
-            const [venue, setVenue] = useState(MASTER_DATA.gyms[0]);
-            const [beforeCafe, setBeforeCafe] = useState(MASTER_DATA.cafes[2]);
-            const [afterCafe, setAfterCafe] = useState(MASTER_DATA.cafes[0]);
+        <div class="form-group">
+          <label>終了時間</label>
+          <input type="time" id="timeEnd" value="20:00">
+        </div>
 
-            // エリアに応じた初期設定
-            useEffect(() => {
-                const vArea = venue.area;
-                if (vArea.includes("Lavender") || vArea.includes("Rochor")) {
-                    setBeforeCafe(MASTER_DATA.cafes[1]); setAfterCafe(MASTER_DATA.cafes[6]);
-                } else if (vArea.includes("City Hall")) {
-                    setBeforeCafe(MASTER_DATA.cafes[5]); setAfterCafe(MASTER_DATA.cafes[2]);
-                } else if (vArea.includes("Tanjong Pagar") || vArea.includes("Maxwell")) {
-                    setBeforeCafe(MASTER_DATA.cafes[9]); setAfterCafe(MASTER_DATA.cafes[3]);
-                } else {
-                    setBeforeCafe(MASTER_DATA.cafes[2]); setAfterCafe(MASTER_DATA.cafes[0]);
-                }
-            }, [venue, intent]);
+        <div class="form-group">
+          <label>メイン行動</label>
+          <select id="mainIntent">
+            <option value="CLIMB">ボルダリング</option>
+            <option value="MUSEUM">美術館・博物館</option>
+            <option value="SHOP">ショッピング</option>
+            <option value="CAFE">カフェ巡り</option>
+            <option value="WALK">散歩</option>
+          </select>
+        </div>
 
-            const shuffleCafe = (current, setFunc) => {
-                const others = MASTER_DATA.cafes.filter(c => c.id !== current.id);
-                setFunc(others[Math.floor(Math.random() * others.length)]);
-            };
+        <div class="form-group">
+          <label>場所</label>
+          <input type="text" id="venue" value="BFF Climb Bendemeer" placeholder="例: BFF Climb Bendemeer">
+        </div>
 
-            const getMapsUrl = (name) => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(name + " Singapore")}`;
-            
-            const getFullRouteUrl = () => {
-                const stops = ["Tiong Bahru", beforeCafe.name, venue.name, afterCafe.name, "Tiong Bahru"]
-                    .map(s => encodeURIComponent(s + " Singapore"))
-                    .join('/');
-                return `https://www.google.com/maps/dir/${stops}`;
-            };
+        <div class="form-group">
+          <label>今のエネルギー</label>
+          <select id="energyLevel">
+            <option value="high">元気</option>
+            <option value="normal">普通</option>
+            <option value="tired" selected>疲れてる</option>
+          </select>
+        </div>
 
-            return (
-                <div className="max-w-md mx-auto min-h-screen flex flex-col p-6 space-y-8 animate-fadeIn">
-                    <header className="mt-8 text-center">
-                        <h1 className="text-4xl font-light tracking-tighter serif italic text-white leading-tight">Contextual Me</h1>
-                        <p className="text-[10px] uppercase tracking-[0.3em] text-slate-500 mt-2 tracking-widest italic text-indigo-400">Fixed Navigator v14.0</p>
-                    </header>
+        <div class="form-group">
+          <label>今日の活動量</label>
+          <select id="activityLevel">
+            <option value="high">多い</option>
+            <option value="normal">普通</option>
+            <option value="low" selected>少ない</option>
+          </select>
+        </div>
+      </div>
 
-                    {view === 'home' && (
-                        <div className="space-y-6">
-                            <div className="glass p-6 rounded-[2.5rem] space-y-6 border-white/10 shadow-2xl">
-                                <div className="flex bg-slate-900 rounded-2xl p-1 border border-white/5">
-                                    <button onClick={() => setIntent('CLIMB')} className={`flex-1 py-3 rounded-xl text-[10px] font-bold transition ${intent === 'CLIMB' ? 'bg-indigo-600 text-white' : 'text-slate-500'}`}>CLIMB</button>
-                                    <button onClick={() => setIntent('CULTURE')} className={`flex-1 py-3 rounded-xl text-[10px] font-bold transition ${intent === 'CULTURE' ? 'bg-indigo-600 text-white' : 'text-slate-500'}`}>MUSEUM</button>
-                                </div>
-                                <div className="space-y-4 px-2">
-                                    <label className="text-[10px] uppercase tracking-widest text-slate-500 block mb-1">Destination</label>
-                                    <select 
-                                        className="w-full bg-slate-900/80 border border-white/10 rounded-xl p-3 text-sm text-white focus:outline-none appearance-none"
-                                        onChange={(e) => {
-                                            const list = intent === 'CLIMB' ? MASTER_DATA.gyms : MASTER_DATA.museums;
-                                            setVenue(list.find(v => v.name === e.target.value));
-                                        }}
-                                        value={venue.name}
-                                    >
-                                        {(intent === 'CLIMB' ? MASTER_DATA.gyms : MASTER_DATA.museums).map(v => (
-                                            <option key={v.id} value={v.name} className="bg-slate-900 text-white">{v.name}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <button onClick={() => setView('plan')} className="w-full btn-gradient text-white py-5 rounded-3xl font-bold hover:opacity-90 transition text-xs tracking-widest uppercase">Go to Plan</button>
-                            </div>
-                        </div>
-                    )}
+      <div class="checkbox-group">
+        <label class="checkbox-label">
+          <input type="checkbox" id="preferTransit" checked>
+          <span>公共交通優先</span>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="fewTransfers" checked>
+          <span>乗り換え少なめ</span>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" id="quiet" checked>
+          <span>静かな場所</span>
+        </label>
+      </div>
 
-                    {view === 'plan' && (
-                        <div className="space-y-6 animate-fadeIn pb-12">
-                            <div className="flex items-center justify-between px-2">
-                                <h2 className="text-xl serif italic text-white">Your Route</h2>
-                                <a href={getFullRouteUrl()} target="_blank" className="bg-indigo-500/20 text-indigo-300 text-[10px] font-bold py-2 px-4 rounded-full border border-indigo-500/30 flex items-center gap-2">
-                                    <Icon name="map" className="w-3 h-3" /> Full Route
-                                </a>
-                            </div>
-                            <div className="space-y-10 relative ml-4 before:absolute before:left-[11px] before:top-2 before:bottom-2 before:w-[1px] before:bg-slate-800">
-                                <TimelineItem time="Pre-Stop" title={beforeCafe.name} desc={beforeCafe.desc} menu={beforeCafe.menu} url={getMapsUrl(beforeCafe.name)} icon="coffee" onShuffle={() => shuffleCafe(beforeCafe, setBeforeCafe)} />
-                                <TimelineItem time="Event" title={venue.name} desc={`${venue.area} にて。`} menu={venue.menu} url={getMapsUrl(venue.name)} icon={intent === 'CLIMB' ? "activity" : "palette"} active />
-                                <TimelineItem time="Reading" title={afterCafe.name} desc={`帰り道、${afterCafe.area} で。`} menu={afterCafe.menu} url={getMapsUrl(afterCafe.name)} icon="book-open" onShuffle={() => shuffleCafe(afterCafe, setAfterCafe)} />
-                                <TimelineItem time="Home" title="Tiong Bahru" desc="穏やかな一日の終わり。" icon="home" />
-                            </div>
-                            <button onClick={() => setView('home')} className="w-full py-4 text-[10px] text-slate-600 uppercase tracking-widest mt-8 border-t border-white/5">Modify Plan</button>
-                        </div>
-                    )}
-                </div>
-            );
-        };
+      <button class="btn-primary" onclick="generatePlan()" id="generateBtn">
+        プランを作成
+      </button>
+    </div>
 
-        const TimelineItem = ({ time, title, desc, menu, url, icon, active, onShuffle }) => (
-            <div className="flex gap-6 relative">
-                <div className={`w-[23px] h-[23px] rounded-full z-10 flex items-center justify-center ${active ? 'bg-indigo-600 shadow-[0_0_15px_rgba(79,70,229,0.5)] text-white' : 'bg-slate-950 border border-slate-800 text-slate-500'}`}>
-                    <Icon name={icon} className="w-3 h-3" />
-                </div>
-                <div className="flex-1 -mt-1">
-                    <div className="flex justify-between items-start">
-                        <span className="text-[10px] font-bold text-slate-600 tracking-tighter uppercase">{time}</span>
-                        {onShuffle && <button onClick={onShuffle} className="text-indigo-400/50 hover:text-indigo-400 p-1 -mt-1"><Icon name="refresh-cw" className="w-3 h-3" /></button>}
-                    </div>
-                    <h3 className={`text-sm font-bold ${active ? 'text-white' : 'text-slate-300'} hover:underline`}>
-                        {url ? <a href={url} target="_blank">{title}</a> : title}
-                    </h3>
-                    <p className="text-[11px] text-slate-500 mt-1 leading-relaxed">{desc}</p>
-                    {menu && (
-                        <div className="mt-3 bg-white/5 rounded-2xl p-4 border border-white/5">
-                            <span className="text-[9px] uppercase tracking-wider text-indigo-400 font-bold block mb-1">Recommended</span>
-                            <p className="text-[10px] text-slate-300 leading-relaxed">{menu}</p>
-                        </div>
-                    )}
-                </div>
+    <!-- Generated Plan -->
+    <div id="planSection" class="plan-section">
+      <!-- Overview -->
+      <div class="overview-card">
+        <h3>💬 今日のプラン</h3>
+        <p>疲れてるのにボルダリング、いいじゃん。体を動かすと案外すっきりするよ。でもその前に、ちゃんと整えておこう。帰ってきてからは、甘いものでごほうび。</p>
+        <p style="margin-top: 1rem; color: #94a3b8; font-size: 0.875rem;">12:00 - 20:00 / Tiong Bahru → BFF Climb Bendemeer → 帰宅</p>
+      </div>
+
+      <!-- Timeline -->
+      <div class="card">
+        <h2>🕐 タイムライン</h2>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-dot before"></div>
+            <div class="timeline-content">
+              <div class="timeline-time">12:00 - 13:00</div>
+              <div class="timeline-title">Before Cafe</div>
+              <div class="timeline-location">Two Bakers</div>
+              <div class="timeline-details">軽く整える時間</div>
             </div>
-        );
+          </div>
 
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
-    </script>
+          <div class="timeline-item">
+            <div class="timeline-dot transit"></div>
+            <div class="timeline-content">
+              <div class="timeline-time">13:15 - 13:40</div>
+              <div class="timeline-title">移動</div>
+              <div class="timeline-details">MRT で Bendemeer へ（乗り換え1回）</div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot main"></div>
+            <div class="timeline-content">
+              <div class="timeline-time">14:00 - 18:00</div>
+              <div class="timeline-title">メイン</div>
+              <div class="timeline-location">
+                BFF Climb Bendemeer
+                <a href="https://www.google.com/maps/search/?api=1&query=BFF+Climb+Bendemeer+Singapore" target="_blank" class="map-link after" style="margin-left: 0.5rem; display: inline-flex;">
+                  🗺️ マップ
+                </a>
+              </div>
+              <div class="timeline-details">登る。</div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot after"></div>
+            <div class="timeline-content">
+              <div class="timeline-time">18:15 - 19:00</div>
+              <div class="timeline-title">After Cafe</div>
+              <div class="timeline-location">Keong Saik Bakery</div>
+              <div class="timeline-details">甘さで回復。</div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-dot home"></div>
+            <div class="timeline-content">
+              <div class="timeline-time">19:30</div>
+              <div class="timeline-title">帰宅</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cafe Cards -->
+      <div class="cafe-grid">
+        <!-- Before Cafe -->
+        <div class="cafe-card">
+          <div class="cafe-card-header before"></div>
+          <div class="cafe-card-body">
+            <h4>Two Bakers</h4>
+            <div class="cafe-address">88 Horne Road, Singapore 209083</div>
+            <a href="https://www.google.com/maps/search/?api=1&query=Two+Bakers+88+Horne+Road+Singapore" target="_blank" class="map-link before">
+              🗺️ Google マップで開く
+            </a>
+            
+            <div class="cafe-section">
+              <div class="cafe-section-title">選んだ理由</div>
+              <div class="cafe-section-text">おしゃれすぎない、カジュアルな雰囲気。ボルダリング前に重くならないメニュー。静か、落ち着いてる。</div>
+            </div>
+            
+            <div class="cafe-section">
+              <div class="cafe-section-title">注文提案</div>
+              <div class="cafe-section-text">Singapore Latte + ヨーグルトパフェ or フルーツトースト</div>
+            </div>
+            
+            <div class="cafe-note">
+              <div class="cafe-note-text">疲れてる時は「軽さ」が大事。ワッフルあるけど、今回はスキップ。</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- After Cafe -->
+        <div class="cafe-card">
+          <div class="cafe-card-header after"></div>
+          <div class="cafe-card-body">
+            <h4>Keong Saik Bakery</h4>
+            <div class="cafe-address">70 Bendemeer Road, #01-03, Singapore 339940</div>
+            <a href="https://www.google.com/maps/search/?api=1&query=Keong+Saik+Bakery+Bendemeer+Singapore" target="_blank" class="map-link after">
+              🗺️ Google マップで開く
+            </a>
+            
+            <div class="cafe-section">
+              <div class="cafe-section-title">選んだ理由</div>
+              <div class="cafe-section-text">BFF Climb から徒歩圏内。ボルダリング後の世界観に合う。甘さと軽さのバランスがいい。</div>
+            </div>
+            
+            <div class="cafe-section">
+              <div class="cafe-section-title">注文提案</div>
+              <div class="cafe-section-text">Lychee Osmanthus Cake + アイスラテ</div>
+            </div>
+            
+            <div class="cafe-note">
+              <div class="cafe-note-text">登った後だから、甘いもの全然OK。でも「ごほうび」と「回復」のバランスね。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Route Summary -->
+      <div class="route-card">
+        <h4>📈 ルート要約</h4>
+        <div class="route-grid">
+          <div>
+            <div class="route-item-label">乗り換え</div>
+            <div class="route-item-value">1回</div>
+          </div>
+          <div>
+            <div class="route-item-label">所要時間</div>
+            <div class="route-item-value">約20分</div>
+          </div>
+          <div>
+            <div class="route-item-label">経路</div>
+            <div class="route-item-value" style="font-size: 0.75rem;">MRT East-West Line → Bugis → Downtown Line → Bendemeer</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Walking Suggestion -->
+      <div class="walking-card">
+        <h4>🚶 ウォーキング提案</h4>
+        <div class="walking-route">Bendemeer → Tiong Bahru (Kallang River 沿い)</div>
+        <div class="walking-duration"><strong>目安:</strong> 30-40分</div>
+        <div class="walking-reason">川沿いだから景色が変わる、気分転換になる。疲れてるけど、動いた方が結局楽になるタイプでしょ、あなた。</div>
+      </div>
+
+      <!-- Final Note -->
+      <div class="final-note">
+        <p>疲れてる時のボルダリング、案外いいリセットになるよ。Before でちゃんと整えて、After で甘さを楽しむ。今日は「ごほうび」の日。ワッフルはまた今度ね。</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Set today's date
+    document.getElementById('date').value = new Date().toISOString().split('T')[0];
+
+    function generatePlan() {
+      const btn = document.getElementById('generateBtn');
+      const planSection = document.getElementById('planSection');
+      
+      // Show loading state
+      btn.innerHTML = '<span class="loading"></span> プランを作成中...';
+      btn.disabled = true;
+      
+      // Simulate loading
+      setTimeout(() => {
+        // Show plan
+        planSection.classList.add('show');
+        
+        // Scroll to plan
+        planSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        
+        // Reset button
+        btn.innerHTML = 'プランを作成';
+        btn.disabled = false;
+      }, 1500);
+    }
+  </script>
 </body>
 </html>
