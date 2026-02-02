@@ -11,10 +11,18 @@
       box-sizing: border-box;
     }
 
+    * {
+      box-sizing: border-box;
+    }
+    
     body {
       font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Meiryo', sans-serif;
       background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 50%, #fecaca 100%);
       min-height: 100vh;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      width: 100%;
     }
 
     .header {
@@ -44,6 +52,8 @@
       max-width: 1200px;
       margin: 0 auto;
       padding: 2rem;
+      box-sizing: border-box;
+      overflow-x: hidden;
     }
 
     .card {
@@ -65,6 +75,8 @@
       display: grid;
       grid-template-columns: 1fr;
       gap: 1.5rem;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     @media (min-width: 768px) {
@@ -76,6 +88,8 @@
     .form-group {
       display: flex;
       flex-direction: column;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     label {
@@ -91,6 +105,9 @@
       border-radius: 0.5rem;
       font-size: 1rem;
       transition: all 0.3s;
+      width: 100%;
+      box-sizing: border-box;
+      max-width: 100%;
     }
 
     input:focus, select:focus {
