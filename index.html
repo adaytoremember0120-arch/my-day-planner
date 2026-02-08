@@ -440,13 +440,31 @@
   <!-- Header -->
   <div class="header">
     <div class="header-content">
-      <h1>☕ 生活目線の1日プラン</h1>
-      <p>知性のある友人が、あなたの決定を起点に、丁寧にプランを整えます</p>
+      <h1>☕ VibeRoute</h1>
+      <p id="headerSubtitle">色んな漫画や人の格言が、あなたの決定を起点に、丁寧にプランを整えます</p>
     </div>
   </div>
 
   <!-- Container -->
   <div class="container">
+    <!-- Cafe Map -->
+    <div class="card" style="margin-bottom: 1.5rem;">
+      <h2>☕ すべてのカフェマップ</h2>
+      <p style="color: #64748b; margin-bottom: 1rem;">このアプリで使用している全33カフェの位置を確認できます</p>
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <a href="#" id="cafeMapLink" target="_blank" style="display: inline-block; padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%); color: white; text-decoration: none; border-radius: 0.5rem; font-weight: 500; transition: all 0.3s;">
+          🗺️ すべてのカフェを地図で見る
+        </a>
+        <button onclick="showCafeList()" style="padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; border: none; border-radius: 0.5rem; font-weight: 500; cursor: pointer; transition: all 0.3s;">
+          📋 カフェリストを見る
+        </button>
+      </div>
+      <div id="cafeListContainer" style="display: none; margin-top: 1.5rem; max-height: 400px; overflow-y: auto; background: #f8fafc; padding: 1rem; border-radius: 0.5rem;">
+        <h3 style="margin-bottom: 1rem; font-size: 1rem;">カフェ一覧 (33店舗)</h3>
+        <div id="cafeList"></div>
+      </div>
+    </div>
+    
     <!-- Input Form -->
     <div class="card">
       <h2>📍 今日の予定を入力</h2>
@@ -711,6 +729,25 @@
       { text: "心で見なくちゃ、ものごとはよく見えないってことさ。かんじんなことは、目に見えないんだよ。", author: "星の王子さま" }
     ];
     
+    // Subtitle quotes for header
+    const subtitleQuotes = [
+      "色んな漫画や人の格言が、あなたの決定を起点に、丁寧にプランを整えます",
+      "迷ったら、まず動け。答えは行動の先にある",
+      "完璧な計画より、楽しい寄り道",
+      "正解なんてない。あるのは、今日のあなたに合った選択だけ",
+      "疲れてるなら、無理しない。でも、全く動かないのも違う",
+      "カフェは目的じゃなくて、余白。余白があるから、人生は豊かになる",
+      "予定を立てるのは、自由になるため",
+      "やりたいことを、やりたいように。それが一番むずかしい",
+      "人生に無駄な時間なんてない。全部、あとで意味を持つ",
+      "小さな決断の積み重ねが、あなたの一日をつくる",
+      "計画は変えていい。大事なのは、今を楽しむこと",
+      "答えを探すより、問いを楽しめ",
+      "正しい道より、あなたの道を",
+      "迷ってる時間も、人生の一部",
+      "今日という日は、二度と来ない。だから、ちゃんと選ぼう"
+    ];
+    
     // Weather conditions database
     const weatherConditions = [
       { condition: "晴れ", temp: "27-32℃", advice: "日差しが強いので、日焼け止めを忘れずに。水分補給もしっかりと。" },
@@ -763,8 +800,8 @@
           area: 'Tanglin', 
           lat: 1.3138, 
           lng: 103.8159,
-          walkRoute: 'https://www.google.com/maps/dir/1.3138,103.8159/1.3121,103.8156/1.3108,103.8181/1.3138,103.8159',
-          duration: '1.5-2時間'
+          walkRoute: 'https://www.google.com/maps/dir/Tanglin+Gate,+Singapore+Botanic+Gardens/1.3138,103.8159/1.3121,103.8156/1.3108,103.8181/1.3095,103.8165/1.3121,103.8156/1.3138,103.8159/Tanglin+Gate,+Singapore+Botanic+Gardens',
+          duration: '2-2.5時間'
         },
         { 
           name: 'East Coast Park (海沿い)', 
@@ -772,8 +809,8 @@
           area: 'East Coast', 
           lat: 1.3006, 
           lng: 103.9148,
-          walkRoute: 'https://www.google.com/maps/dir/1.3006,103.9148/1.3015,103.9250/1.3006,103.9148',
-          duration: '1-1.5時間'
+          walkRoute: 'https://www.google.com/maps/dir/1.3006,103.9148/1.3015,103.9250/1.3025,103.9350/1.3015,103.9250/1.3006,103.9148',
+          duration: '1.5-2時間'
         },
         { 
           name: 'MacRitchie Reservoir (森林)', 
@@ -781,8 +818,8 @@
           area: 'MacRitchie', 
           lat: 1.3420, 
           lng: 103.8200,
-          walkRoute: 'https://www.google.com/maps/dir/1.3420,103.8200/1.3465,103.8235/1.3420,103.8200',
-          duration: '2-3時間'
+          walkRoute: 'https://www.google.com/maps/dir/MacRitchie+Reservoir+Park/1.3420,103.8200/1.3465,103.8235/1.3490,103.8250/1.3465,103.8235/1.3420,103.8200/MacRitchie+Reservoir+Park',
+          duration: '2.5-3時間'
         },
         { 
           name: 'Kallang River 沿い散歩', 
@@ -790,17 +827,74 @@
           area: 'Kallang', 
           lat: 1.3098, 
           lng: 103.8652,
-          walkRoute: 'https://www.google.com/maps/dir/1.3098,103.8652/1.3050,103.8600/1.3098,103.8652',
-          duration: '45分-1時間'
+          walkRoute: 'https://www.google.com/maps/dir/1.3098,103.8652/1.3070,103.8620/1.3050,103.8600/1.3030,103.8580/1.3050,103.8600/1.3098,103.8652',
+          duration: '1-1.5時間'
         },
         { 
-          name: 'Fort Canning Park (歴史公園)', 
-          address: 'River Valley Road, Singapore 179037', 
+          name: 'Fort Canning Park → Edith Patisserie', 
+          address: 'Fort Canning Park, Singapore', 
           area: 'Fort Canning', 
           lat: 1.2935, 
           lng: 103.8467,
-          walkRoute: 'https://www.google.com/maps/dir/1.2935,103.8467/1.2958,103.8458/1.2935,103.8467',
-          duration: '1-1.5時間'
+          walkRoute: 'https://www.google.com/maps/dir/Fort+Canning+Park,+Singapore/1.2958,103.8458/1.2985,103.8490/Edith+Patisserie+Cake+Bar+Penang+Road+Singapore',
+          duration: '1時間 + カフェ休憩',
+          destination: 'Edith Patisserie Cake Bar (Penang Road)'
+        },
+        { 
+          name: "Pearl's Hill Reservoir", 
+          address: "Pearl's Hill City Park, Singapore", 
+          area: 'Chinatown', 
+          lat: 1.2868, 
+          lng: 103.8394,
+          walkRoute: 'https://www.google.com/maps/dir/Pearl%27s+Hill+City+Park,+Singapore/1.2868,103.8394/1.2885,103.8405/1.2895,103.8410/1.2885,103.8405/1.2868,103.8394/Pearl%27s+Hill+City+Park,+Singapore',
+          duration: '45分-1時間'
+        },
+        { 
+          name: 'Keppel Hill Reservoir → Mount Faber', 
+          address: 'Keppel Hill Reservoir, Singapore', 
+          area: 'Telok Blangah', 
+          lat: 1.2733, 
+          lng: 103.8189,
+          walkRoute: 'https://www.google.com/maps/dir/Keppel+Hill+Reservoir,+Singapore/1.2733,103.8189/1.2771,103.8186/Mount+Faber+Peak,+Singapore',
+          duration: '1.5-2時間'
+        },
+        { 
+          name: 'Rifle Range Link (自然トレイル)', 
+          address: 'Rifle Range Link, Bukit Timah Nature Reserve', 
+          area: 'Bukit Timah', 
+          lat: 1.3453, 
+          lng: 103.7916,
+          walkRoute: 'https://www.google.com/maps/dir/Rifle+Range+Road+Car+Park,+Singapore/1.3453,103.7916/1.3475,103.7930/1.3490,103.7945/1.3470,103.7960/1.3453,103.7916/Rifle+Range+Road+Car+Park,+Singapore',
+          duration: '1.5-2時間'
+        },
+        { 
+          name: 'Gaharu Trail (森林トレイル)', 
+          address: 'Gaharu Trail, MacRitchie Reservoir', 
+          area: 'MacRitchie', 
+          lat: 1.3510, 
+          lng: 103.8245,
+          walkRoute: 'https://www.google.com/maps/dir/MacRitchie+Reservoir+Park,+Singapore/1.3510,103.8245/1.3535,103.8260/1.3555,103.8275/1.3535,103.8260/1.3510,103.8245/MacRitchie+Reservoir+Park,+Singapore',
+          duration: '1.5-2時間'
+        },
+        { 
+          name: 'Mount Faber (Marang Trail)', 
+          address: 'Mount Faber Park, Singapore', 
+          area: 'Telok Blangah', 
+          lat: 1.2771, 
+          lng: 103.8186,
+          walkRoute: 'https://www.google.com/maps/dir/Mount+Faber+Park,+Singapore/1.2771,103.8186/1.2755,103.8175/1.2740,103.8165/1.2755,103.8175/1.2771,103.8186/VivoCity,+Singapore',
+          duration: '1-1.5時間',
+          destination: 'VivoCity内のカフェ'
+        },
+        { 
+          name: 'Rifle Range Nature Park (Colugo Trail)', 
+          address: 'Rifle Range Nature Park, Singapore', 
+          area: 'Bukit Timah', 
+          lat: 1.3470, 
+          lng: 103.7935,
+          walkRoute: 'https://www.google.com/maps/dir/Rifle+Range+Nature+Park,+Singapore/1.3470,103.7935/1.3485,103.7950/1.3500,103.7965/1.3485,103.7950/1.3470,103.7935/Colugo+Deck+Rifle+Range+Nature+Park',
+          duration: '1.5-2時間',
+          destination: 'Colugo Deck / BreakfastGrill - Kilat / FlagWhite'
         }
       ]
     };
@@ -812,6 +906,10 @@
       { name: 'Chye Seng Huat Hardware', address: '150 Tyrwhitt Road, Singapore 207563', area: 'Lavender', lat: 1.3100, lng: 103.8575 },
       { name: 'SYIP', address: '72 Bendemeer Road, #01-05, Singapore 339941', area: 'Bendemeer', lat: 1.3195, lng: 103.8625 },
       { name: 'Keong Saik Bakery', address: '70 Bendemeer Road, #01-03, Singapore 339940', area: 'Bendemeer', lat: 1.3198, lng: 103.8620 },
+      
+      // Tiong Bahru area
+      { name: 'Little Rogue Coffee', address: '66 Eng Hoon Street, #01-26, Singapore 160066', area: 'Tiong Bahru', lat: 1.2858, lng: 103.8262 },
+      { name: 'Plain Vanilla Tiong Bahru', address: '1A Yong Siak Street, Singapore 168641', area: 'Tiong Bahru', lat: 1.2862, lng: 103.8268 },
       
       // Tanjong Pagar/Maxwell area
       { name: 'Equate Coffee', address: '1 Tanjong Pagar Plaza, #02-25, Singapore 082001', area: 'Tanjong Pagar', lat: 1.2765, lng: 103.8438 },
@@ -828,6 +926,16 @@
       { name: 'Apartment Coffee', address: '1 Keong Saik Road, Singapore 089109', area: 'Chinatown', lat: 1.2785, lng: 103.8426 },
       { name: 'Common Man Coffee Roasters', address: '22 Martin Road, Singapore 239058', area: 'Robertson Quay', lat: 1.2889, lng: 103.8389 },
       
+      // HarbourFront/VivoCity area
+      { name: 'Starbucks (VivoCity)', address: '1 HarbourFront Walk, #01-148/149 VivoCity, Singapore 098585', area: 'HarbourFront', lat: 1.2643, lng: 103.8220 },
+      { name: 'The Coffee Bean (VivoCity)', address: '1 HarbourFront Walk, VivoCity, Singapore 098585', area: 'HarbourFront', lat: 1.2643, lng: 103.8220 },
+      
+      // Upper Bukit Timah area
+      { name: 'Colugo Deck', address: 'Rifle Range Nature Park, Singapore', area: 'Bukit Timah', lat: 1.3470, lng: 103.7935 },
+      { name: 'BreakfastGrill - Kilat', address: '12 Jln Kilat, Singapore 598134', area: 'Upper Bukit Timah', lat: 1.3490, lng: 103.7820 },
+      { name: 'FlagWhite', address: '13 Toh Yi Drive, Singapore 596585', area: 'Upper Bukit Timah', lat: 1.3465, lng: 103.7855 },
+      { name: 'Better Days Cafe & Bar', address: 'Beauty World Centre, 144 Upper Bukit Timah Road, Singapore 588177', area: 'Upper Bukit Timah', lat: 1.3425, lng: 103.7760 },
+      
       // Jurong East/West area (shopping malls + standalone)
       { name: 'Miam Miam (Westgate)', address: '3 Gateway Drive, #02-27/29 Westgate, Singapore 608532', area: 'Jurong East', lat: 1.3345, lng: 103.7425 },
       { name: 'Fluff Stack (Westgate)', address: '3 Gateway Drive, #BA-K1 Westgate, Singapore 608532', area: 'Jurong East', lat: 1.3345, lng: 103.7425 },
@@ -835,7 +943,6 @@
       { name: 'Awfully Chocolate (Westgate)', address: '3 Gateway Drive, #B1-K1 Westgate, Singapore 608532', area: 'Jurong East', lat: 1.3345, lng: 103.7425 },
       { name: 'Suzuki Cafe', address: '8 Chin Bee Avenue, Singapore 619932', area: 'Jurong West', lat: 1.3280, lng: 103.7485 },
       { name: 'WellSmoocht', address: '319 Jurong East Street 31, #01-58, Singapore 600319', area: 'Jurong East', lat: 1.3340, lng: 103.7385 },
-      { name: 'Dewgather (Star Vista)', address: '1 Vista Exchange Green, #01-46, Singapore 138617', area: 'Buona Vista', lat: 1.3065, lng: 103.7875 },
       
       // Little India/Bugis area
       { name: 'Cafe Monochrome', address: '10 Jalan Besar, Singapore 208787', area: 'Jalan Besar', lat: 1.3055, lng: 103.8545 },
@@ -846,7 +953,7 @@
       
       // City Hall/Marina area
       { name: 'The Glasshouse', address: '1 Fullerton Road, #02-02B, Singapore 049213', area: 'Marina Bay', lat: 1.2860, lng: 103.8540 },
-      { name: 'The Muffin', address: '60B Prinsep Street, Singapore 188662', area: 'Bras Basah', lat: 1.2995, lng: 103.8505 },
+      { name: 'Picnic', address: '42 Prinsep Street, Singapore 188675', area: 'Bras Basah', lat: 1.2998, lng: 103.8508 },
       
       // Nylon for balance
       { name: 'Nylon Coffee Roasters', address: '4 Everton Park, #01-40, Singapore 080004', area: 'Tanjong Pagar', lat: 1.2765, lng: 103.8425 }
@@ -1050,11 +1157,15 @@
       } else if (intent === 'CAFE') {
         mainDetails.textContent = '巡る。';
       } else if (intent === 'WALK') {
+        let walkInfo = '歩く。';
         if (venue.walkRoute && venue.duration) {
-          mainDetails.innerHTML = `歩く。<br><a href="${venue.walkRoute}" target="_blank" style="color: #3b82f6; font-size: 0.875rem;">🗺️ 散歩コースを見る</a><br><span style="color: #64748b; font-size: 0.875rem;">所要時間: ${venue.duration}</span>`;
-        } else {
-          mainDetails.textContent = '歩く。';
+          walkInfo += `<br><a href="${venue.walkRoute}" target="_blank" style="color: #3b82f6; font-size: 0.875rem;">🗺️ 散歩コースを見る</a>`;
+          walkInfo += `<br><span style="color: #64748b; font-size: 0.875rem;">所要時間: ${venue.duration}</span>`;
+          if (venue.destination) {
+            walkInfo += `<br><span style="color: #64748b; font-size: 0.875rem;">ゴール: ${venue.destination}</span>`;
+          }
         }
+        mainDetails.innerHTML = walkInfo;
       }
       
       // Add transport mode to timeline items
@@ -1152,6 +1263,70 @@
       const weatherTextEl = document.getElementById('weatherText');
       weatherTextEl.textContent = `${randomWeather.condition}、気温${randomWeather.temp}。${randomWeather.advice}`;
     }
+    
+    // Generate cafe map URL with all cafe markers
+    function generateCafeMapUrl() {
+      // Create Google Maps URL with multiple markers using My Maps format
+      // Since we can't create actual pins via URL, we'll open a search that shows the area
+      const center = '1.3521,103.8198'; // Singapore center
+      const zoom = '11';
+      
+      // Create a URL that searches for all our cafes
+      // We'll use the first few cafes as waypoints to give user an idea
+      const sampleCafes = cafes.slice(0, 10).map(c => 
+        `${c.name.replace(/[()]/g, '')}, Singapore`
+      ).join(' / ');
+      
+      const mapUrl = `https://www.google.com/maps/search/${encodeURIComponent('Singapore cafes')}/@${center},${zoom}z`;
+      
+      document.getElementById('cafeMapLink').href = mapUrl;
+    }
+    
+    // Show cafe list
+    function showCafeList() {
+      const container = document.getElementById('cafeListContainer');
+      const list = document.getElementById('cafeList');
+      
+      if (container.style.display === 'none') {
+        // Generate cafe list grouped by area
+        const cafesByArea = {};
+        cafes.forEach(cafe => {
+          if (!cafesByArea[cafe.area]) {
+            cafesByArea[cafe.area] = [];
+          }
+          cafesByArea[cafe.area].push(cafe);
+        });
+        
+        let html = '';
+        Object.keys(cafesByArea).sort().forEach(area => {
+          html += `<div style="margin-bottom: 1rem;">`;
+          html += `<h4 style="color: #1e293b; font-size: 0.9rem; margin-bottom: 0.5rem; font-weight: 600;">${area} (${cafesByArea[area].length})</h4>`;
+          cafesByArea[area].forEach(cafe => {
+            const mapLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(cafe.name + ' Singapore')}`;
+            html += `<div style="margin-left: 1rem; margin-bottom: 0.3rem; font-size: 0.85rem;">`;
+            html += `<a href="${mapLink}" target="_blank" style="color: #3b82f6; text-decoration: none;">📍 ${cafe.name}</a>`;
+            html += `<div style="color: #64748b; font-size: 0.75rem; margin-left: 1.2rem;">${cafe.address}</div>`;
+            html += `</div>`;
+          });
+          html += `</div>`;
+        });
+        
+        list.innerHTML = html;
+        container.style.display = 'block';
+      } else {
+        container.style.display = 'none';
+      }
+    }
+    
+    // Update header subtitle with random quote
+    function updateHeaderSubtitle() {
+      const randomSubtitle = subtitleQuotes[Math.floor(Math.random() * subtitleQuotes.length)];
+      document.getElementById('headerSubtitle').textContent = randomSubtitle;
+    }
+    
+    // Initialize on page load
+    generateCafeMapUrl();
+    updateHeaderSubtitle();
   </script>
 </body>
 </html>
