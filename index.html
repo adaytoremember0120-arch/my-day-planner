@@ -490,23 +490,6 @@
           </select>
         </div>
 
-        <div class="form-group">
-          <label>今のエネルギー</label>
-          <select id="energyLevel">
-            <option value="high">元気</option>
-            <option value="normal">普通</option>
-            <option value="tired" selected>疲れてる</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>今日の活動量</label>
-          <select id="activityLevel">
-            <option value="high">多い</option>
-            <option value="normal">普通</option>
-            <option value="low" selected>少ない</option>
-          </select>
-        </div>
       </div>
 
       <div class="checkbox-group">
@@ -754,14 +737,18 @@
       MUSEUM: [
         { name: 'National Gallery Singapore', address: '1 St Andrew\'s Road, Singapore 178957', area: 'City Hall', lat: 1.2903, lng: 103.8519 },
         { name: 'SAM at Tanjong Pagar Distripark', address: '39 Keppel Road, Singapore 089065', area: 'Tanjong Pagar', lat: 1.2692, lng: 103.8433 },
-        { name: 'ArtScience Museum', address: '6 Bayfront Avenue, Singapore 018974', area: 'Marina Bay', lat: 1.2862, lng: 103.8593 }
+        { name: 'ArtScience Museum', address: '6 Bayfront Avenue, Singapore 018974', area: 'Marina Bay', lat: 1.2862, lng: 103.8593 },
+        { name: 'Gillman Barracks', address: '9 Lock Road, Singapore 108937', area: 'Gillman', lat: 1.2787, lng: 103.8027, buildingUrl: 'https://www.google.com/maps/search/?api=1&query=Gillman+Barracks+galleries+Singapore' },
+        { name: 'STPI Creative Workshop & Gallery', address: '41 Robertson Quay, Singapore 238236', area: 'Robertson Quay', lat: 1.2932, lng: 103.8389, buildingUrl: 'https://www.google.com/maps/search/?api=1&query=41+Robertson+Quay+Singapore' }
       ],
       SHOP: [
         { name: 'Haji Lane (ヴィンテージ・雑貨)', address: 'Haji Lane, Singapore', area: 'Bugis', lat: 1.3007, lng: 103.8591 },
         { name: 'Queensway Shopping Centre (スポーツ用品)', address: '1 Queensway, Singapore 149053', area: 'Queenstown', lat: 1.2942, lng: 103.8036 },
         { name: 'Books Actually (独立系書店)', address: '9 Yong Siak Street, Singapore 168645', area: 'Tiong Bahru', lat: 1.2856, lng: 103.8267 },
         { name: 'Sifr Aromatics (香水・アロマ)', address: '42 Arab Street, Singapore 199741', area: 'Kampong Glam', lat: 1.3020, lng: 103.8588 },
-        { name: 'Cat Socrates (文具・雑貨)', address: '448 Joo Chiat Road, Singapore 427671', area: 'Joo Chiat', lat: 1.3145, lng: 103.9032 }
+        { name: 'Cat Socrates (文具・雑貨)', address: '448 Joo Chiat Road, Singapore 427671', area: 'Joo Chiat', lat: 1.3145, lng: 103.9032 },
+        { name: 'The Dr. Martens Store (Wheelock Place)', address: '501 Orchard Road, #02-09 Wheelock Place, Singapore 238880', area: 'Orchard', lat: 1.3044, lng: 103.8311, buildingUrl: 'https://www.google.com/maps/search/?api=1&query=Wheelock+Place+stores+Singapore' },
+        { name: 'Leftfoot (レフトフット)', address: '5 Purvis Street, #01-02, Singapore 188584', area: 'City Hall', lat: 1.2985, lng: 103.8551, buildingUrl: 'https://www.google.com/maps/search/?api=1&query=5+Purvis+Street+Singapore' }
       ],
       CAFE: [
         { name: 'Arab Street カフェ巡り', address: 'Arab Street Area, Singapore', area: 'Kampong Glam', lat: 1.3020, lng: 103.8588 },
@@ -770,11 +757,51 @@
         { name: 'Holland Village カフェ巡り', address: 'Holland Avenue Area, Singapore', area: 'Holland Village', lat: 1.3115, lng: 103.7960 }
       ],
       WALK: [
-        { name: 'Singapore Botanic Gardens (植物園)', address: '1 Cluny Road, Singapore 259569', area: 'Tanglin', lat: 1.3138, lng: 103.8159 },
-        { name: 'East Coast Park (海沿い)', address: 'East Coast Park Service Road, Singapore', area: 'East Coast', lat: 1.3006, lng: 103.9148 },
-        { name: 'MacRitchie Reservoir (森林)', address: 'MacRitchie Reservoir Park, Singapore', area: 'MacRitchie', lat: 1.3420, lng: 103.8200 },
-        { name: 'Kallang River 沿い散歩', address: 'Kallang River, Singapore', area: 'Kallang', lat: 1.3098, lng: 103.8652 },
-        { name: 'Fort Canning Park (歴史公園)', address: 'River Valley Road, Singapore 179037', area: 'Fort Canning', lat: 1.2935, lng: 103.8467 }
+        { 
+          name: 'Singapore Botanic Gardens (植物園)', 
+          address: '1 Cluny Road, Singapore 259569', 
+          area: 'Tanglin', 
+          lat: 1.3138, 
+          lng: 103.8159,
+          walkRoute: 'https://www.google.com/maps/dir/1.3138,103.8159/1.3121,103.8156/1.3108,103.8181/1.3138,103.8159',
+          duration: '1.5-2時間'
+        },
+        { 
+          name: 'East Coast Park (海沿い)', 
+          address: 'East Coast Park Service Road, Singapore', 
+          area: 'East Coast', 
+          lat: 1.3006, 
+          lng: 103.9148,
+          walkRoute: 'https://www.google.com/maps/dir/1.3006,103.9148/1.3015,103.9250/1.3006,103.9148',
+          duration: '1-1.5時間'
+        },
+        { 
+          name: 'MacRitchie Reservoir (森林)', 
+          address: 'MacRitchie Reservoir Park, Singapore', 
+          area: 'MacRitchie', 
+          lat: 1.3420, 
+          lng: 103.8200,
+          walkRoute: 'https://www.google.com/maps/dir/1.3420,103.8200/1.3465,103.8235/1.3420,103.8200',
+          duration: '2-3時間'
+        },
+        { 
+          name: 'Kallang River 沿い散歩', 
+          address: 'Kallang River, Singapore', 
+          area: 'Kallang', 
+          lat: 1.3098, 
+          lng: 103.8652,
+          walkRoute: 'https://www.google.com/maps/dir/1.3098,103.8652/1.3050,103.8600/1.3098,103.8652',
+          duration: '45分-1時間'
+        },
+        { 
+          name: 'Fort Canning Park (歴史公園)', 
+          address: 'River Valley Road, Singapore 179037', 
+          area: 'Fort Canning', 
+          lat: 1.2935, 
+          lng: 103.8467,
+          walkRoute: 'https://www.google.com/maps/dir/1.2935,103.8467/1.2958,103.8458/1.2935,103.8467',
+          duration: '1-1.5時間'
+        }
       ]
     };
 
@@ -1004,18 +1031,30 @@
       // Home
       timelineItems[7].querySelector('.timeline-time').textContent = homeTime;
       
-      // Update activity text
+      // Update activity text and add special info for WALK, MUSEUM, SHOP
       const mainDetails = timelineItems[3].querySelector('.timeline-details');
       if (intent === 'CLIMB') {
         mainDetails.textContent = '登る。';
       } else if (intent === 'MUSEUM') {
-        mainDetails.textContent = '観る。';
+        if (venue.buildingUrl) {
+          mainDetails.innerHTML = `観る。<br><a href="${venue.buildingUrl}" target="_blank" style="color: #3b82f6; font-size: 0.875rem;">🏢 このビルの他の店を見る</a>`;
+        } else {
+          mainDetails.textContent = '観る。';
+        }
       } else if (intent === 'SHOP') {
-        mainDetails.textContent = '探す。';
+        if (venue.buildingUrl) {
+          mainDetails.innerHTML = `探す。<br><a href="${venue.buildingUrl}" target="_blank" style="color: #3b82f6; font-size: 0.875rem;">🏢 このビルの他の店を見る</a>`;
+        } else {
+          mainDetails.textContent = '探す。';
+        }
       } else if (intent === 'CAFE') {
         mainDetails.textContent = '巡る。';
       } else if (intent === 'WALK') {
-        mainDetails.textContent = '歩く。';
+        if (venue.walkRoute && venue.duration) {
+          mainDetails.innerHTML = `歩く。<br><a href="${venue.walkRoute}" target="_blank" style="color: #3b82f6; font-size: 0.875rem;">🗺️ 散歩コースを見る</a><br><span style="color: #64748b; font-size: 0.875rem;">所要時間: ${venue.duration}</span>`;
+        } else {
+          mainDetails.textContent = '歩く。';
+        }
       }
       
       // Add transport mode to timeline items
@@ -1056,7 +1095,7 @@
       
       const afterOrder = intent === 'CLIMB' 
         ? '抹茶ラテ（砂糖控えめ）+ フルーツタルト or ナッツとドライフルーツ' 
-        : 'スムージー + エネルギーボール or ダークチョコレート';
+        : 'スムージー + フルーツタルト or ダークチョコレート';
       cafeCards[1].querySelector('.cafe-section-text').textContent = afterOrder;
       
       const afterNote = intent === 'CLIMB' 
