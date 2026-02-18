@@ -465,6 +465,31 @@
       </div>
     </div>
     
+    <!-- Quick Healthy Recipes -->
+    <div class="card" style="margin-bottom: 1.5rem;">
+      <h2>🥗 5分で作れる健康メニュー</h2>
+      <p style="color: #64748b; margin-bottom: 1rem;">外出前や帰宅後にサッと作れる、健康的で美味しいメニュー</p>
+      <button onclick="showRandomRecipe()" style="padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; border-radius: 0.5rem; font-weight: 500; cursor: pointer; transition: all 0.3s;">
+        🎲 ランダムでメニューを表示
+      </button>
+      <div id="recipeContainer" style="display: none; margin-top: 1.5rem; background: #f8fafc; padding: 1.5rem; border-radius: 0.5rem;">
+        <h3 id="recipeName" style="color: #1e293b; margin-bottom: 1rem; font-size: 1.1rem;"></h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+          <div>
+            <h4 style="color: #475569; font-size: 0.9rem; margin-bottom: 0.5rem; font-weight: 600;">📝 材料</h4>
+            <ul id="recipeIngredients" style="margin: 0; padding-left: 1.5rem; color: #64748b; font-size: 0.85rem; line-height: 1.8;"></ul>
+          </div>
+          <div>
+            <h4 style="color: #475569; font-size: 0.9rem; margin-bottom: 0.5rem; font-weight: 600;">👨‍🍳 作り方</h4>
+            <ol id="recipeSteps" style="margin: 0; padding-left: 1.5rem; color: #64748b; font-size: 0.85rem; line-height: 1.8;"></ol>
+          </div>
+        </div>
+        <div style="margin-top: 1rem; padding: 1rem; background: #e0f2fe; border-radius: 0.5rem; border-left: 4px solid #0ea5e9;">
+          <p id="recipeNote" style="margin: 0; color: #0c4a6e; font-size: 0.85rem;"></p>
+        </div>
+      </div>
+    </div>
+    
     <!-- Input Form -->
     <div class="card">
       <h2>📍 今日の予定を入力</h2>
@@ -746,6 +771,58 @@
       "正しい道より、あなたの道を",
       "迷ってる時間も、人生の一部",
       "今日という日は、二度と来ない。だから、ちゃんと選ぼう"
+    ];
+    
+    // Quick healthy recipes (5 minutes or less)
+    const quickRecipes = [
+      {
+        name: "アボカド納豆丼",
+        ingredients: ["ご飯 1杯", "納豆 1パック", "アボカド 1/2個", "醤油 小さじ1", "ごま油 少々", "刻み海苔"],
+        steps: ["ご飯を温める", "アボカドを角切りにする", "納豆を混ぜる", "ご飯にアボカド、納豆をのせる", "醤油、ごま油をかけて海苔をちらす"],
+        note: "タンパク質と良質な脂質がたっぷり。腹持ちも良く、エネルギーチャージに最適。"
+      },
+      {
+        name: "ギリシャヨーグルトボウル",
+        ingredients: ["ギリシャヨーグルト 200g", "バナナ 1本", "ミックスナッツ 一掴み", "ハチミツ 小さじ1", "シナモン 少々"],
+        steps: ["ボウルにヨーグルトを入れる", "バナナをスライスしてのせる", "ナッツを砕いてかける", "ハチミツとシナモンをかける"],
+        note: "高タンパク、低糖質。朝食や運動後の栄養補給に。ナッツで満足感もアップ。"
+      },
+      {
+        name: "卵とトマトの中華風炒め",
+        ingredients: ["卵 2個", "トマト 1個", "ごま油 小さじ1", "塩 少々", "ネギ 適量"],
+        steps: ["卵を溶いて塩を加える", "トマトを角切りにする", "フライパンにごま油を熱し、卵を炒める", "トマトを加えてサッと炒める", "ネギを散らす"],
+        note: "タンパク質とリコピンが同時に摂れる。簡単だけど栄養バランス抜群の一品。"
+      },
+      {
+        name: "サーモンアボカドサラダ",
+        ingredients: ["スモークサーモン 50g", "アボカド 1/2個", "レタス 適量", "レモン汁 小さじ1", "オリーブオイル 小さじ1", "黒胡椒"],
+        steps: ["レタスをちぎってお皿に盛る", "アボカドをスライスする", "サーモンとアボカドをのせる", "レモン汁とオリーブオイルをかける", "黒胡椒をふる"],
+        note: "オメガ3脂肪酸たっぷり。美肌にも良く、糖質も少ないのでダイエット中にも最適。"
+      },
+      {
+        name: "豆腐とキムチの和え物",
+        ingredients: ["絹豆腐 1/2丁", "キムチ 50g", "ごま油 小さじ1/2", "ごま 適量", "ネギ 適量"],
+        steps: ["豆腐を一口大に切る", "キムチを食べやすく切る", "豆腐とキムチを混ぜる", "ごま油をかける", "ごまとネギを散らす"],
+        note: "発酵食品で腸内環境を整える。低カロリー高タンパク。辛さで代謝もアップ。"
+      },
+      {
+        name: "ツナとアボカドのオープンサンド",
+        ingredients: ["全粒粉パン 1枚", "ツナ缶 1/2缶", "アボカド 1/4個", "レモン汁 少々", "塩・胡椒", "ミニトマト"],
+        steps: ["パンを軽くトーストする", "アボカドをマッシュしてレモン汁を混ぜる", "パンにアボカドを塗る", "水気を切ったツナをのせる", "トマトをのせて塩胡椒"],
+        note: "良質なタンパク質と脂質のバランスが良い。全粒粉パンで食物繊維もプラス。"
+      },
+      {
+        name: "枝豆とチーズのおつまみボウル",
+        ingredients: ["冷凍枝豆 1カップ", "モッツァレラチーズ 50g", "オリーブオイル 小さじ1", "塩 少々", "黒胡椒"],
+        steps: ["枝豆を解凍する（レンジ1分）", "チーズを角切りにする", "ボウルに枝豆とチーズを入れる", "オリーブオイル、塩、胡椒で和える"],
+        note: "植物性と動物性のタンパク質を両方摂取。小腹が空いた時の健康的なスナック。"
+      },
+      {
+        name: "鶏ささみときゅうりの和え物",
+        ingredients: ["サラダチキン 100g", "きゅうり 1本", "ごま油 小さじ1", "醤油 小さじ1", "白ごま", "ラー油（お好みで）"],
+        steps: ["サラダチキンを手でほぐす", "きゅうりを叩いて一口大に切る", "ボウルに全て入れる", "ごま油と醤油で和える", "ごまをかけ、お好みでラー油"],
+        note: "高タンパク低脂質の王道メニュー。きゅうりで水分補給もできる爽やかな一品。"
+      }
     ];
     
     // Weather conditions database
@@ -1316,6 +1393,29 @@
       } else {
         container.style.display = 'none';
       }
+    }
+    
+    // Show random recipe
+    function showRandomRecipe() {
+      const container = document.getElementById('recipeContainer');
+      const recipe = quickRecipes[Math.floor(Math.random() * quickRecipes.length)];
+      
+      // Update recipe name
+      document.getElementById('recipeName').textContent = recipe.name;
+      
+      // Update ingredients
+      const ingredientsList = document.getElementById('recipeIngredients');
+      ingredientsList.innerHTML = recipe.ingredients.map(ing => `<li>${ing}</li>`).join('');
+      
+      // Update steps
+      const stepsList = document.getElementById('recipeSteps');
+      stepsList.innerHTML = recipe.steps.map(step => `<li>${step}</li>`).join('');
+      
+      // Update note
+      document.getElementById('recipeNote').textContent = recipe.note;
+      
+      // Show container
+      container.style.display = 'block';
     }
     
     // Update header subtitle with random quote
